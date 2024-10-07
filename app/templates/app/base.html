@@ -1,0 +1,33 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escultura Website</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+
+</head>
+<body>
+
+<div class="Header">
+
+</div>
+<div class ="container">
+
+<div class="sidebar">
+{% include 'app/sidebar.html' %}
+</div>
+<div class ="contents">
+{% block content %}
+
+{% endblock content %}
+</div>
+</div>
+
+
+
+</body>
+</html>
