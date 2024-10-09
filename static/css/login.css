@@ -1,0 +1,36 @@
+* {
+box-sizing: border-box;
+padding: 0;
+margin:0;
+}
+
+body, html {
+margin: 0;
+padding: 0;
+height:93vh;
+width: 100%;
+font-family: Arial, sans-serif;
+}
+
+.Header{
+height:10%;
+width:100%;
+background-color: #1e3d59;
+}
+
+.container{
+display:flex;
+background-color: #f5f0e1;
+height:93vh;
+width:100%;
+}
+
+.left-column{
+flex:50%
+}
+
+.right-column{
+background-color:red;
+flex:50%;
+}
+
