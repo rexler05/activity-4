@@ -1,8 +1,7 @@
 from django.db import models
-
-class MyModel(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-
-    def __str__(self):
-        return self.name
+class Member(models.Model):
+    fname = models.CharField(max_length=50)
+    lname = models.CharField(max_length=100)
+    email = models.EmailField(max_length=200)
+    passwd = models.CharField(max_length=50)
+    age = models.IntegerField()

@@ -41,13 +41,13 @@ align-items: center;
 }
 
 .form-container{
-background-color:yellow;
 margin:auto;
 background-color:#1e3d59;
 height:50%;
 width:60%;
 align-content:center;
 flex-direction: column;
+border-radius: 4px;
 
 }
 
@@ -57,7 +57,7 @@ form input{
 height:35px;
 width: 95%;
 margin-bottom:25px;
-margin-left:6px;
+margin-left:8px;
 border: 1px solid #ddd;
 border-radius: 4px;
 font-size: 14px;
@@ -72,7 +72,7 @@ background-color:#f5f0e1;
 height:35px;
 width: 30%;
 margin-bottom:25px;
-margin-left:6px;
+margin-left:8px;
 border: 1px solid #ddd;
 border-radius: 4px;
 font-size: 14px;
