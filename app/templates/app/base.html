@@ -13,7 +13,12 @@
 <body>
 
 <div class="Header">
-<a href="{% url 'login' %}" class="button"> log out</a>
+    <div class="left-header">
+       <p>Welcome, {{ user.username }}!</p>
+    </div>
+    <div class="right-header">
+            <a href="{% url 'login' %}" class="logout-button">Log Out</a>
+    </div>
 </div>
 <div class ="container">
 

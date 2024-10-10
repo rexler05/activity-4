@@ -12,16 +12,46 @@ font-family: Arial, sans-serif;
 }
 
 .Header{
-align-content:center;
-height:10%;
-width:100%;
+display: flex;
+height: 10%;
+width: 100%;
 background-color: #1e3d59;
 }
-.Header a{
-float:right;
-width:100px;
-height:20px;
+
+
+
+.left-header{
+justify-content:center;
+align-content:center;
+height: 100%;
+flex:50%;
 }
+
+.left-header p{
+margin-left:10px;
+color:white;
+}
+
+
+.right-header{
+justify-content:center;
+align-content:center;
+height: 100%;
+flex:50%;
+}
+
+.logout-button{
+float:right;
+margin-right:10px;
+height:15px
+width:10%;
+background-color:white;
+text-decoration:none;
+border-radius:4px;
+font-size:20px;
+}
+
+
 
 .container{
 display:flex;

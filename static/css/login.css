@@ -7,7 +7,7 @@ margin:0;
 body, html {
 margin: 0;
 padding: 0;
-height:93vh;
+height:120vh;
 width: 100%;
 font-family: Arial, sans-serif;
 }
@@ -21,8 +21,9 @@ background-color: #1e3d59;
 .container{
 display:flex;
 background-color: #f5f0e1;
-height:93vh;
+height:90%;
 width:100%;
+
 }
 
 .left-column{
@@ -41,6 +42,7 @@ align-items: center;
 }
 
 .form-container{
+
 margin:auto;
 background-color:#1e3d59;
 height:50%;
@@ -50,8 +52,23 @@ flex-direction: column;
 border-radius: 4px;
 
 }
+.form-container label, a{
+color:white;
+}
+.form-containers{
+margin:auto;
+background-color:#1e3d59;
+height:95%;
+width:60%;
+align-content:center;
+flex-direction: column;
+border-radius: 4px;
 
+}
+.form-containers label, a{
 
+color:white;
+}
 
 form input{
 height:35px;
@@ -67,6 +84,7 @@ font-size: 14px;
 display:flex;
 justify-content:center;
 }
+
 .button button{
 background-color:#f5f0e1;
 height:35px;
@@ -87,5 +105,41 @@ margin-left:6px;
 
 
 
+.alert {
+    padding: 15px;
+    background-color: #f44336;
+    color: white;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position: relative;
+    transition: opacity 0.6s;
+}
+
+
+.alert.success {
+    background-color: #4CAF50;
+}
+
+
+.alert.info {
+    background-color: #2196F3;
+}
+
+
+.alert.warning {
+    background-color: #ff9800;
+}
+
+
+.alert .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
 
 
