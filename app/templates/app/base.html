@@ -17,7 +17,11 @@
        <p>Welcome, {{ user.username }}!</p>
     </div>
     <div class="right-header">
-            <a href="{% url 'login' %}" class="logout-button">Log Out</a>
+            {% if user.is_authenticated %}
+             <a href="{% url 'login' %}" class="logout-button">Log out</a>
+            {% else %}
+
+            {% endif %}
     </div>
 </div>
 <div class ="container">
