@@ -7,7 +7,6 @@ from .models import Member
 
 
 
-
 def LoginPageView(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -23,26 +22,15 @@ def LoginPageView(request):
 
 def join(request):
     if request.method == "POST":
-        form = MemberForm(request.POST or None)
+        form = MemberForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your form has been submitted successfully.')
+            return redirect('home')
         else:
-            fname = request.POST['fname']
-            lname = request.POST['lname']
-            age = request.POST['age']
-            email = request.POST['email']
-            passwd = request.POST['passwd']
+            messages.error(request, ('There was an error with your submission.'))
 
-            messages.success(request, ('There was an error'))
-            #return redirect('join')
-            return render(request, 'app/join.html',{'fname':fname,
-                                                    'lname':lname,
-                                                    'age':age,
-                                                    'email':email,
-                                                    'passwd':passwd})
-
-        messages.success(request, ('Your Form has Been Submitted'))
-        return redirect('home')
+            return render(request, 'app/join.html', {'form': MemberForm()})
 
     else:
         return render(request, 'app/join.html',{})
