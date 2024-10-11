@@ -6,37 +6,26 @@ from django.contrib import messages
 from .models import Member
 
 
+
+
 def LoginPageView(request):
     if request.method == 'POST':
         username = request.POST['username']
-        password = request.POST['passwd']  # Ensure this matches the form input name
-        member = authenticate(request, username=username, passwd=password)
-        if member is not None:
-            login(request, member)
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Invalid username or password')
-    return render(request, 'authentication/login.html')
+
+            return render(request,'app/login.html', {'error': 'Invalid username or password'})
+    return render(request, 'app/login.html')
 
 def join(request):
     if request.method == "POST":
-        form = MemberForm(request.POST)
+        form = MemberForm(request.POST or None)
         if form.is_valid():
-
-            member = form.save()
-
-            username = request.POST['username']
-            password = request.POST['passwd']
-
-            user = Member.objects.filter(username=username, passwd=password).first()
-
-            if user:
-                request.session['user_id'] = user.id
-                messages.success(request, 'Your account has been created and you are now logged in.')
-                return redirect('home')
-            else:
-                messages.error(request, 'There was a problem logging you in after sign-up.')
-                return redirect('login')
+            form.save()
         else:
             fname = request.POST['fname']
             lname = request.POST['lname']
@@ -44,16 +33,19 @@ def join(request):
             email = request.POST['email']
             passwd = request.POST['passwd']
 
-            messages.error(request, 'There was an error in your form.')
-            return render(request, 'app/join.html', {
-                'fname': fname,
-                'lname': lname,
-                'age': age,
-                'email': email,
-                'passwd': passwd
-            })
+            messages.success(request, ('There was an error'))
+            #return redirect('join')
+            return render(request, 'app/join.html',{'fname':fname,
+                                                    'lname':lname,
+                                                    'age':age,
+                                                    'email':email,
+                                                    'passwd':passwd})
+
+        messages.success(request, ('Your Form has Been Submitted'))
+        return redirect('home')
+
     else:
-        return render(request, 'app/join.html', {})
+        return render(request, 'app/join.html',{})
 
 
 class HomePageView(TemplateView):
