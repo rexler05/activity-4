@@ -2,9 +2,9 @@
 {% load static %}
 {% block content%}
 
-    <div class="post-box">
+    <div class="post-boxs">
                <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
-      <div class="post-entry">
+      <div class="post-entrys">
         <h2><a href=" ">{{post.title}}</a></h2>
       </div>
       <p>{{post.body}}</p>

@@ -101,6 +101,28 @@ height:360px;
 text-align: center;
 }
 
+
+.post-boxs {
+  border: 1px solid #ccc;
+  height:99%;
+  width: 99%;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 8px;
+}
+
+.post-boxs p{
+    margin:10px;
+}
+
+.post-entrys {
+text-align: center;
+}
+
+
+
+
 .create-container{
   display: flex;
   justify-content: center;
