@@ -1,11 +1,16 @@
 {% extends 'app/base.html'%}
 {% load static %}
 {% block content%}
-  {% for post in  post_list %}
-    <div class="post-entry">
-      <h2><a href="">{{post.title}}</a>
-        <p>{{post.body}}</p>
-      </h2>
+<div class="create-button">
+  <a href="{% url 'blog_create' %}">+ New Blog Post</a>
+</div>
+
+  {% for post in  posts %}
+    <div class="post-box">
+      <div class="post-entry">
+        <h2><a href="{% url 'blog_detail' post.pk %}">{{post.title}}</a></h2>
+      </div>
+
     </div>
   {% endfor %}
 {% endblock content%}
