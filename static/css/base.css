@@ -20,39 +20,6 @@ background-color: #1e3d59;
 
 
 
-.left-header{
-justify-content:center;
-align-content:center;
-height: 100%;
-flex:50%;
-}
-
-.left-header p{
-margin-left:10px;
-color:white;
-}
-
-
-.right-header{
-justify-content:center;
-align-content:center;
-height: 100%;
-flex:50%;
-}
-
-.logout-button{
-float:right;
-margin-right:10px;
-height:15px;
-width:10%;
-background-color:white;
-text-decoration:none;
-border-radius:4px;
-font-size:20px;
-}
-
-
-
 .container{
 display:flex;
 background-color: #1e3d59;
@@ -101,5 +68,7 @@ align-items:center;
 height:360px;
 }
 
-
+.post-entry a{
+    color:black;
+}
 
