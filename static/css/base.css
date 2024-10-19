@@ -104,15 +104,17 @@ text-align: center;
 .create-container{
   display: flex;
   justify-content: center;
+  margin:auto;
   height: 100%;
   width: 100%;
+
 }
 
 .form-container{
-  margin: 60px;
-  height: 85%;
-  width: 35%;
   background-color: cornflowerblue;
+  margin: 10px;
+  border-radius: 10px;
+
 
 }
 
@@ -135,13 +137,16 @@ text-align: center;
 
 
 
-.form-container  select,textarea {
+.form-container  textarea {
   margin-left:25px;
-  text-align: center;
   width: 85%;
 
 }
-.form-container input{
-    margin-left:25px;
+.form-container input, select{
+   text-align: center;
+  height:26px;
+  margin-left:25px;
+  width: 85%;
 }
+
 
