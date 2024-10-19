@@ -2,9 +2,11 @@
 
 {% block content%}
 
-    <a href="{% url 'home' %}" class="button"> home</a>
-    <a href="{% url 'about' %}" class="button"> about</a>
-    <a href="{% url 'contact' %}" class="button"> contact</a>
+    <a href="{% url 'home' %}" class="button"> Home</a>
+    <a href="{% url 'blog_list' %}" class="button"> Blog List</a>
+    <a href="{% url 'about' %}" class="button"> About</a>
+    <a href="{% url 'contact' %}" class="button"> Contact</a>
+
 
 
 {% endblock content%}
