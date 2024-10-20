@@ -4,7 +4,7 @@
 <div class="create-container">
 <div class="form-container">
        <h1>Update Post</h1>
-    <form action ="{% url 'blog_update' object.pk %}" method="post">
+    <form action="{% url 'blog_update' post.pk %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{form.as_p}}
       <input type="submit" value="Update">

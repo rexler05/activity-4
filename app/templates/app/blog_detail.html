@@ -1,16 +1,20 @@
-{% extends 'app/base.html'%}
+{% extends 'app/base.html' %}
 {% load static %}
-{% block content%}
 
-    <div class="post-boxs">
-               <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
-      <div class="post-entrys">
-        <h2><a href=" ">{{post.title}}</a></h2>
-      </div>
-      <p>{{post.body}}</p>
-
-        <a style="float:right" href="{% url 'blog_delete' post.pk %}">- Delete Blog</a>
+{% block content %}
+<div class="post-boxs">
+    <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
+    <div class="post-entrys">
+        <h2><a href="#">{{ post.title }}</a></h2>  <!-- Fixed empty href -->
     </div>
+    <p>{{ post.body }}</p>
 
+    {% if post.post_image %}
+        <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
+    {% else %}
+        <p>No image available for this post.</p>  <!-- Optional message for posts without images -->
+    {% endif %}
 
-{% endblock content%}
+    <a style="float:right" href="{% url 'blog_delete' post.pk %}">- Delete Blog</a>
+</div>
+{% endblock content %}
