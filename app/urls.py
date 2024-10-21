@@ -2,11 +2,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import HomePageView, AboutPageView, ContactPageView, BlogListView, BlogDetailView, BlogCreateView, \
-    BlogUpdateView, BlogDeleteView, register, login_view, logout_view, ProfileView, ProfileUpdateView
+    BlogUpdateView, BlogDeleteView, register, LoginView, logout_view, ProfileView, ProfileUpdateView
 
 urlpatterns = [
     path('register/', register, name='register'),
-    path(' ', login_view, name='login'),
+    path('', LoginView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('profile/edit/', ProfileUpdateView.as_view(), name='edit_profile'),

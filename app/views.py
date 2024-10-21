@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, ProfileUpdateForm
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .models import Post , Profile
 
 
@@ -33,19 +33,27 @@ def register(request):
     return render(request, 'app/register.html', {'form': form})
 
 # Login View
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'app/login.html', {'form': form})
+class LoginView(FormView):
+    template_name = 'app/login.html'
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(self.request, user)
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "Invalid username or password")
+            return self.form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(DetailView):
