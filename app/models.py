@@ -1,6 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.urls import reverse
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other')], null=True, blank=True)
+    phone_number = models.CharField(max_length=15, null=True, blank=True)
+    middle_name = models.CharField(max_length=30, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
 
 class Post(models.Model):
     title = models.CharField(max_length=100)

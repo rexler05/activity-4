@@ -1,6 +1,68 @@
 {% extends 'app/base.html' %}
-{% load static %}
-
 {% block content %}
-  <img class="Logo" src="{% static 'images/favicon.ico' %}">
+<style>
+  /* Styles for the dashboard table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+table thead {
+    background-color: #f4f4f4;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid #4CAF50;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
+}
+
+</style>
+<h1>Dashboard</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in profiles %}
+        <tr>
+            <td>{{ profile.user.username }}</td>
+            <td>{{ profile.user.first_name }}</td>
+            <td>{{ profile.user.last_name }}</td>
+            <td>{{ profile.user.email }}</td>
+            <td>{{ profile.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  h1 {
+    color: #333; /* Darker color for the header */
+    text-align: center; /* Center the header */
+    margin-bottom: 20px; /* Space below the header */
+}
+
+.profile-container {
+    max-width: 600px; /* Limit the width for better readability */
+    margin: 0 auto; /* Center the container */
+    background-color: #fff; /* White background for the profile */
+    padding: 20px; /* Padding for inner spacing */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.profile-info {
+    margin-bottom: 15px; /* Space between info paragraphs */
+    padding: 10px; /* Inner spacing for paragraphs */
+    border-bottom: 1px solid #e0e0e0; /* Light border for separation */
+}
+
+.profile-info:last-child {
+    border-bottom: none; /* Remove border for last item */
+}
+
+.profile-label {
+    font-weight: bold; /* Bold for labels */
+}
+
+.edit-button {
+    display: block; /* Block display for button */
+    margin: 20px auto; /* Center button */
+    padding: 10px 20px; /* Padding for button */
+    font-size: 16px; /* Font size for button */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    text-align: center; /* Center text in button */
+    text-decoration: none; /* No underline */
+}
+
+.edit-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+@media (max-width: 768px) {
+    /* Responsive design for smaller screens */
+    .profile-container {
+        padding: 15px; /* Less padding on smaller screens */
+    }
+
+    h1 {
+        font-size: 24px; /* Smaller font size */
+    }
+}
+</style>
+
+<div class="profile-container" style="width: 400px;">
+     <h1>User Profile</h1>
+    <div class="profile-info">
+        <span class="profile-label">First Name:</span> {{ profile.user.first_name }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Middle Name:</span> {{ profile.middle_name }} <!-- Updated to use profile.middle_name -->
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Last Name:</span> {{ profile.user.last_name }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Username:</span> {{ profile.user.username }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Email:</span> {{ profile.user.email }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Age:</span> {{ profile.age }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Gender:</span> {{ profile.get_gender_display }}
+    </div>
+    <div class="profile-info">
+        <span class="profile-label">Phone Number:</span> {{ profile.phone_number }}
+    </div>
+        <a href="{% url 'edit_profile' %}" class="edit-button">Edit Profile</a>  <!-- Link to Edit Profile -->
+
+</div>
+{% endblock content %}

@@ -23,13 +23,13 @@
 <div class ="login-contents">
 {% block content %}
 <div class="form-containers">
-     <h2>Register</h2>
+    <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
-          <a href="{% url 'login' %}" class="button"> login Here!</a>
+        <button  type="submit">Login</button>
     </form>
+      <a href="{% url 'register' %}" class="button"> Register Here!</a>
 </div>
 {% endblock content %}
 </div>

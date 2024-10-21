@@ -81,6 +81,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+LOGIN_REDIRECT_URL = 'home'  # Redirect to homepage after login
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to homepage after logout
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

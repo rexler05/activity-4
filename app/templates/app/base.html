@@ -14,9 +14,12 @@
 </head>
 <body>
 <div class="Header">
-    <div class="login-button">
-
-    </div>
+                {% if user.is_authenticated %}
+                    <li>Welcome, {{ user.username }}!</li>
+                    <li><a style="color:black" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a style="color:black" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
 
 </div>
 
