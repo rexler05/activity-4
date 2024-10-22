@@ -13,28 +13,23 @@
 
 </head>
 <body>
-<div class="Header">
+<div class="Header"></div>
+
+<div class="login-container">
+    <div class="login-form">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-button">
+              <button type="submit" >Login</button>
+            </div>
 
 
+        </form>
+        <a href="{% url 'register' %}" >Register Here!</a>
+    </div>
 </div>
-
-<div class ="container">
-
-<div class ="login-contents">
-{% block content %}
-<div class="form-containers">
-    <h2>Login</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button  type="submit">Login</button>
-    </form>
-      <a href="{% url 'register' %}" class="button"> Register Here!</a>
-</div>
-{% endblock content %}
-</div>
-</div>
-
 
 
 </body>

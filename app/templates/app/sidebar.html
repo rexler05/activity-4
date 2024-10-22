@@ -2,10 +2,13 @@
 
 {% block content%}
 
-    <a href="{% url 'home' %}" class="button"> Home</a>
-    <a href="{% url 'profile' %}" class="button"> Profile</a>
-    <a href="{% url 'blog' %}" class="button"> Blog List</a>
-    <a href="{% url 'about' %}" class="button"> About</a>
-    <a href="{% url 'contact' %}" class="button"> Contact</a>
+<div class="group-btn">
+    <a href="{% url 'home' %}" > Home</a>
+    <a href="{% url 'profile' %}" > Profile</a>
+    <a href="{% url 'blog' %}" > Blog List</a>
+    <a href="{% url 'about' %}" > About</a>
+    <a href="{% url 'contact' %}" > Contact</a>
+</div>
+
 
 {% endblock content%}

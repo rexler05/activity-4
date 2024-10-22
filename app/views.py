@@ -10,27 +10,41 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .models import Post , Profile
+from django.contrib import messages
 
 
 
-# Registration View
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            Profile.objects.get_or_create(
-                user=user,
-                age=form.cleaned_data['age'],
-                gender=form.cleaned_data['gender'],
-                phone_number=form.cleaned_data['phone_number'],
-                middle_name=form.cleaned_data['middle_name']
-            )
-            login(request, user)
-            return redirect('home')
-    else:
-        form = RegistrationForm()
-    return render(request, 'app/register.html', {'form': form})
+class RegisterView(FormView):
+    template_name = 'app/register.html'
+    form_class = RegistrationForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        # Save the user
+        user = form.save()
+
+        # Create a related profile
+        Profile.objects.get_or_create(
+            user=user,
+            age=form.cleaned_data['age'],
+            gender=form.cleaned_data['gender'],
+            phone_number=form.cleaned_data['phone_number'],
+            middle_name=form.cleaned_data['middle_name']
+        )
+
+        # Log the user in
+        login(self.request, user)
+
+        # Add success message
+        messages.success(self.request, "Registration successful! You are now logged in.")
+
+        # Redirect to the success URL
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Add error message when form is invalid
+        messages.error(self.request, "There was an error in your registration. Please correct the errors below.")
+        return super().form_invalid(form)
 
 # Login View
 class LoginView(FormView):

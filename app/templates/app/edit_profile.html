@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="create-container">
-<div class="form-container" style="width: 400px;" >
+<div class="form-container" >
     <h2>Edit Profile</h2>
     <form action="{% url 'edit_profile' %}" method="post">  <!-- Updated this line -->
         {% csrf_token %}
