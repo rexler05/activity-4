@@ -11,6 +11,7 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .models import Post , Profile
 from django.contrib import messages
+from django.db.models import Q
 
 
 
@@ -146,28 +147,66 @@ class ContactPageView(TemplateView):
 class BlogListView(ListView):
     model = Post
     context_object_name = 'posts'
-    template_name ='app/blog_list.html'
+    template_name = 'app/blog_list.html'
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_authenticated:
+            # Show posts visible to everyone, public posts, and private/friends if the user is the author
+            return Post.objects.filter(
+                Q(visibility='EVERYONE') |
+                Q(visibility='PUBLIC') |
+                Q(visibility='PRIVATE', author=user) |
+                Q(visibility='FRIENDS', author=user)
+            ).distinct()
+        else:
+            # Only show posts visible to everyone and public posts for non-authenticated users
+            return Post.objects.filter(
+                Q(visibility='EVERYONE') |
+                Q(visibility='PUBLIC')
+            ).distinct()
 
 class BlogDetailView(DetailView):
     model = Post
     context_object_name = 'post'
     template_name = 'app/blog_detail.html'
 
+    def get_queryset(self):
+        user = self.request.user
+        post = super().get_queryset()
+
+        # Allow visibility based on the current user
+        if user.is_authenticated:
+            return post.filter(
+                Q(visibility='EVERYONE') |
+                Q(visibility='PUBLIC') |
+                Q(visibility='PRIVATE', author=user) |
+                Q(visibility='FRIENDS', author=user)
+            )
+        else:
+            return post.filter(Q(visibility='EVERYONE') | Q(visibility='PUBLIC'))
+
+
 class BlogCreateView(CreateView):
     model = Post
-    fields = ['title', 'author', 'body','post_image','post_categories']
+    fields = ['title', 'body', 'post_image', 'post_categories', 'visibility']
     template_name = 'app/blog_create.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class BlogUpdateView(UpdateView):
     model = Post
-    fields = ['title', 'author', 'body','post_image','post_categories']
+    fields = ['title', 'body', 'post_image', 'post_categories', 'visibility']  # Include 'visibility'
     template_name = 'app/blog_update.html'
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.author = self.request.user  # Set the author if required
+        form.instance.author = self.request.user  # Ensure the author remains the same
         return super().form_valid(form)
 
 class BlogDeleteView(DeleteView):

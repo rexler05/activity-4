@@ -3,15 +3,21 @@
 
 {% block content %}
 <div class="post-boxs">
-      <div class="post-entrys">
+    <div class="post-entrys">
         <h2><a href="#">{{ post.title }}</a></h2>
-            <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
-     </div>
-
-
+    </div>
     <p>{{ post.body }}</p>
 
-    <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
-    <a style="float:right" href="{% url 'blog_delete' post.pk %}">- Delete Blog</a>
+    {% if post.post_image %}
+        <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
+    {% else %}
+        <p>No image available for this post.</p>
+    {% endif %}
+
+    <!-- Show the edit button only if the current user is the author of the post -->
+    {% if user == post.author %}
+        <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
+        <a href="{% url 'blog_delete' post.pk %}" style="float:right">- Delete Blog</a>
+    {% endif %}
 </div>
 {% endblock content %}
