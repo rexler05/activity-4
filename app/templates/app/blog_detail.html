@@ -3,21 +3,55 @@
 
 {% block content %}
 <div class="post-boxs">
-    <div class="post-entrys">
-        <h2><a href="#">{{ post.title }}</a></h2>
+      <!-- Show the edit button only if the current user is the author of the post -->
+    <div class="post-actions">
+        {% if user == post.author %}
+            <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
+            <a href="{% url 'blog_delete' post.pk %}" style="float:right">- Delete Blog</a>
+        {% endif %}
     </div>
-    <p>{{ post.body }}</p>
 
-    {% if post.post_image %}
-        <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
-    {% else %}
-        <p>No image available for this post.</p>
-    {% endif %}
+    <div class="post-title">
+        <h2>{{ post.title }}</h2>
+    </div>
 
-    <!-- Show the edit button only if the current user is the author of the post -->
-    {% if user == post.author %}
-        <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
-        <a href="{% url 'blog_delete' post.pk %}" style="float:right">- Delete Blog</a>
-    {% endif %}
+    <div class="post-image">
+        {% if post.post_image %}
+            <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
+        {% else %}
+            <p>No image available for this post.</p>
+        {% endif %}
+    </div>
+
+    <div class="post-body">
+        <p>{{ post.body }}</p>
+    </div>
+
+     <!-- Add a New Comment -->
+    <div class="comment-form">
+        <h4>Add a Comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Post Comment</button>
+        </form>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.author.username }}</strong>: {{ comment.body }}</p>
+                <small>Posted on {{ comment.date_created }}</small>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+
+
+
+
 </div>
 {% endblock content %}

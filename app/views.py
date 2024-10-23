@@ -9,9 +9,13 @@ from .forms import RegistrationForm, ProfileUpdateForm
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from .models import Post , Profile
+from .models import Post , Profile , Pet , Shelter
 from django.contrib import messages
 from django.db.models import Q
+from .forms import CommentForm, PetForm, ShelterForm
+
+
+
 
 
 
@@ -73,10 +77,23 @@ class LoginView(FormView):
 @method_decorator(login_required, name='dispatch')
 class ProfileView(DetailView):
     model = Profile
-    template_name = 'app/profile.html'
+    template_name = 'app/account_settings.html'
 
     def get_object(self, queryset=None):
         return Profile.objects.get(user=self.request.user)
+
+@method_decorator(login_required, name='dispatch')
+class ProfilePageView(DetailView):
+    model = Profile
+    template_name = 'app/profile.html'  # Create this template
+
+    def get_object(self, queryset=None):
+        return Profile.objects.get(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.filter(author=self.request.user)  # Fetch user's posts
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -99,7 +116,7 @@ class ProfileUpdateView(UpdateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('profile')
+        return reverse_lazy('account_settings')
 
     def form_valid(self, form):
         user = self.request.user
@@ -175,8 +192,6 @@ class BlogDetailView(DetailView):
     def get_queryset(self):
         user = self.request.user
         post = super().get_queryset()
-
-        # Allow visibility based on the current user
         if user.is_authenticated:
             return post.filter(
                 Q(visibility='EVERYONE') |
@@ -186,6 +201,31 @@ class BlogDetailView(DetailView):
             )
         else:
             return post.filter(Q(visibility='EVERYONE') | Q(visibility='PUBLIC'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.all()  # Fetch all comments related to the post
+        context['comment_form'] = CommentForm()  # Add comment form to the context
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        comment_form = CommentForm(request.POST)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user
+            comment.save()
+            return redirect(self.get_object())  # Redirect to the same post detail view
+
+        context = self.get_context_data()
+        context['comment_form'] = comment_form  # Include the invalid form in the context
+        return self.render_to_response(context)
+
+
+
+
 
 
 class BlogCreateView(CreateView):
@@ -206,10 +246,90 @@ class BlogUpdateView(UpdateView):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.author = self.request.user  # Ensure the author remains the same
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
 class BlogDeleteView(DeleteView):
     model = Post
     template_name = 'app/blog_delete.html'
     success_url = reverse_lazy('blog')
+
+
+class ShelterCreateView(CreateView):
+    model = Shelter
+    form_class = ShelterForm
+    template_name = 'app/shelter_form.html'
+    success_url = reverse_lazy('shelter_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+class ShelterUpdateView(UpdateView):
+    model = Shelter
+    form_class = ShelterForm
+    template_name = 'app/shelter_edit.html'
+    success_url = reverse_lazy('shelter_list')
+
+class ShelterListView(ListView):
+    model = Shelter
+    context_object_name = 'shelters'
+    template_name = 'app/shelter_list.html'
+
+    def get_queryset(self):
+        return Shelter.objects.filter(owner=self.request.user)
+
+class ShelterDetailView(DetailView):
+    model = Shelter
+    template_name = 'app/shelter_detail.html'
+    context_object_name = 'shelter'
+
+
+class ShelterDeleteView(DeleteView):
+    model = Shelter
+    template_name = 'app/shelter_delete.html'
+    success_url = reverse_lazy('shelter_list')
+
+    def get_queryset(self):
+        # Ensure the shelter belongs to the current user
+        return Shelter.objects.filter(owner=self.request.user)
+
+# Pet views
+class PetCreateView(CreateView):
+    model = Pet
+    form_class = PetForm
+    template_name = 'app/pet_form.html'
+    success_url = reverse_lazy('pet_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+class PetUpdateView(UpdateView):
+    model = Pet
+    form_class = PetForm
+    template_name = 'app/pet_edit.html'
+    success_url = reverse_lazy('pet_list')
+
+class PetListView(ListView):
+    model = Pet
+    context_object_name = 'pets'
+    template_name = 'app/pet_list.html'
+
+    def get_queryset(self):
+        return Pet.objects.filter(owner=self.request.user)
+
+class PetDetailView(DetailView):
+    model = Pet
+    template_name = 'app/pet_detail.html'
+    context_object_name = 'pet'
+
+    def get_queryset(self):
+        # Ensure the pet belongs to the current user or is public
+        return Pet.objects.filter(owner=self.request.user) | Pet.objects.filter(visibility='PUBLIC')
+
+class PetDeleteView(DeleteView):
+    model = Pet
+    template_name = 'app/pet_delete.html'
+    success_url = reverse_lazy('pet_list')
+

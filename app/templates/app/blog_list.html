@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="create-button">
-    <a href="{% url 'blog_create' %}">+Post</a>
+    <a href="{% url 'blog_create' %}">+New Post</a>
 </div>
 
 <div class="box-container">
@@ -12,7 +12,9 @@
                 <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
                 <div class="image-detail">
                     {% if post.post_image %}
-                        <img src="{{ post.post_image.url }}" alt="Post Image" style="max-width: 100%; height: auto;"> <!-- Adjusted image styling -->
+                        <a href="{% url 'blog_detail' post.pk %}">
+                            <img src="{{ post.post_image.url }}" alt="Post Image" > <!-- Adjusted image styling -->
+                        </a>
                     {% else %}
                         <p>No image available</p> <!-- Optional message for posts without images -->
                     {% endif %}

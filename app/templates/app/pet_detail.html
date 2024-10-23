@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="pet-details-container">
+        <div class="post-actions">
+            <a href="{% url 'pet_edit' pet.pk %}">+ Edit Blog</a>
+            <a href="{% url 'pet_delete' pet.pk %}" >- Delete Blog</a>
+        </div>
+    <h2 class="pet-name">{{ pet.name }}</h2>
+        {% if pet.post_image %}
+        <div class="pet-image">
+            <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}">
+        </div>
+    {% endif %}
+    <div class="pet-details">
+        <p>Animal: {{ pet.species }}</p>
+        <p>Breed: {{ pet.breed }}</p>
+        <p>Age: {{ pet.age }} years</p>
+        <p>Description: {{ pet.description }}</p>
+    </div>
+
+    <p>Visibility: {{ pet.visibility }}</p>
+
+
+</div>
+{% endblock content %}

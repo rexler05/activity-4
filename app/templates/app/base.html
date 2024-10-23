@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 {% load static %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escultura Website</title>
 
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
- <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
-
 </head>
 <body>
-<div class="Header">
-                {% if user.is_authenticated %}
-                    <li>Welcome, {{ user.username }}!</li>
-                    <li><a style="color:black" href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a style="color:black" href="{% url 'login' %}">Login</a></li>
-                {% endif %}
+    <!-- Header Section -->
+    <header class="main-header">
+        <span class="welcome-message">Welcome, {{ user.username }}!</span>
+        <div class="search-btn">
+            <label>
+                search
+            </label>
+            <input>
+            </input>
+        </div>
 
-</div>
+        <nav>
+            <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+            <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
+            <a href="{% url 'blog' %}"><i class="fas fa-paw"></i> Adoption</a>
+             <a href="{% url 'pet_list' %}"><i class="fas fa-paw"></i> Pet List</a>
+             <a href="{% url 'shelter_list' %}"><i class="fas fa-paw"></i> Shelter List</a>
+            <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+            <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+            <a href="{% url 'account_settings' %}"><i class="fas fa-cog"></i> Settings</a>
+            <a class="logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </header>
 
-<div class ="container">
-
-<div class="sidebar">
-{% include 'app/sidebar.html' %}
-</div>
-<div class ="contents">
-{% block content %}
-
-{% endblock content %}
-</div>
-</div>
-
-
+    <main class="container">
+        <section class="contents">
+            {% block content %}
+            {% endblock content %}
+        </section>
+    </main>
 
 </body>
 </html>
