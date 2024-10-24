@@ -43,13 +43,13 @@ urlpatterns = [
     path('blog/<int:pk>/delete', BlogDeleteView.as_view(), name='blog_delete'),
     path('shelters/', ShelterListView.as_view(), name='shelter_list'),
     path('shelters/<int:pk>/', ShelterDetailView.as_view(), name='shelter_detail'),
-    path('shelters/add/', ShelterCreateView.as_view(), name='shelter_form'),
+    path('shelters/create/', ShelterCreateView.as_view(), name='shelter_form'),
     path('shelters/<int:pk>/edit/', ShelterUpdateView.as_view(), name='shelter_edit'),
-    path('shelters/<int:pk>/delete', ShelterDeleteView.as_view(), name='blog_delete'),
+    path('shelters/<int:pk>/delete', ShelterDeleteView.as_view(), name='shelter_delete'),
     # Pet URLs
     path('pets/', PetListView.as_view(), name='pet_list'),
     path('pets/<int:pk>/', PetDetailView.as_view(), name='pet_detail'),
-    path('pets/add/', PetCreateView.as_view(), name='pet_form'),
+    path('pets/create/', PetCreateView.as_view(), name='pet_form'),
     path('pets/<int:pk>/edit/', PetUpdateView.as_view(), name='pet_edit'),
     path('pets/<int:pk>/delete', PetDeleteView.as_view(), name='pet_delete'),
 

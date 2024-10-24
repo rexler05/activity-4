@@ -1,6 +1,5 @@
 {% extends 'app/base.html' %}
 {% block content %}
-<h2>Update Shelter</h2>
 
 <form action="{% url 'shelter_edit' shelter.pk %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}

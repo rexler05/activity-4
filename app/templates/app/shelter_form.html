@@ -1,8 +1,8 @@
 {% extends 'app/base.html' %}
 {% block content %}
-<h2>Add or Edit Shelter</h2>
 
-<form method="post">
+ <form action="{% url 'shelter_form' %}" method="post" enctype="multipart/form-data">
+
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Save Shelter</button>

@@ -5,18 +5,18 @@
     <a href="{% url 'shelter_form' %}">+New Shelter</a>
 </div>
 
-
-<div class="shelter-list">
+<div class="box-container">
     {% for shelter in shelters %}
-    <div class="shelter-item">
-        <h3><a href="{% url 'shelter_detail' shelter.pk %}">{{ shelter.name }}</a></h3>
-        <p>Location: {{ shelter.address }}</p>
-        <p>Contact: {{ shelter.contact_email }}</p>
-        <a href="{% url 'shelter_edit' shelter.pk %}" class="btn btn-secondary">Edit</a>
+    <div class="post-box">
+        <div class="post-entry">
+            <h3><a href="{% url 'shelter_detail' shelter.pk %}">{{ shelter.name }}</a></h3>
+            <p>Location: {{ shelter.address }}</p>
+            <p>Contact: {{ shelter.contact_email }}</p>
+            <a href="{% url 'shelter_edit' shelter.pk %}" class="btn btn-secondary">Edit</a>
+        </div>
     </div>
-    {% empty %}
-    <p>No shelters available.</p>
     {% endfor %}
 </div>
 
 {% endblock content %}
+

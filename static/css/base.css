@@ -8,7 +8,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    overflow-x: hidden; /* Prevents horizontal overflow */
+    overflow-x: hidden;
 }
 
 .container {
@@ -16,7 +16,7 @@ body {
     padding: 0;
     width: 100%;
     height: 93vh;
-    overflow-x: hidden; /* Ensures no horizontal scroll */
+    overflow-x: hidden;
 }
 .search-btn label{
     color: white;
@@ -56,10 +56,10 @@ body {
     height: 93vh;
     width: 100%;
     border-radius: 10px;
-    overflow-x: hidden; /* Prevent overflow */
+    overflow-x: hidden;
 }
 
-/* Box layout, with responsive design for smaller screens */
+
 .box-container {
     display: flex;
     flex-wrap: wrap;
@@ -95,7 +95,7 @@ body {
     width: calc(25% - 20px);
     max-width: 300px;
     min-width: 300px;
-    max-height: 250px;
+    height:auto;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 
@@ -485,43 +485,6 @@ form input {
 
 
 
-.pet-list {
-     display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
-    justify-content: center;
-    width: 100%;
-    min-width: 100%;
-      margin-left:5px;
-}
-
-
-
-.pet-item {
-    background-color:aliceblue;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 20px;
-    width: calc(25% - 20px);
-    max-width: 300px;
-    min-width: 300px;
-    height:auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-     margin-left:20px;
-
-}
-
-.pet-item h3{
-
-    text-align: center;
-}
-
-.pet-item img{
-
-     height: 100px;
-    width:150px;
-}
 
 .pet-form {
     max-width: 600px;
@@ -567,7 +530,7 @@ background-color:aliceblue;
 }
 
 
-/* Container for the pet details */
+
 .pet-details-container {
     width: 100%;
     height:100%;

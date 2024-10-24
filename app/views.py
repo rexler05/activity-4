@@ -12,7 +12,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from .models import Post , Profile , Pet , Shelter
 from django.contrib import messages
 from django.db.models import Q
-from .forms import CommentForm, PetForm, ShelterForm
+from .forms import CommentForm
 
 
 
@@ -217,13 +217,11 @@ class BlogDetailView(DetailView):
             comment.post = self.object
             comment.author = request.user
             comment.save()
-            return redirect(self.get_object())  # Redirect to the same post detail view
+            return redirect(self.get_object())
 
         context = self.get_context_data()
-        context['comment_form'] = comment_form  # Include the invalid form in the context
+        context['comment_form'] = comment_form
         return self.render_to_response(context)
-
-
 
 
 
@@ -237,10 +235,11 @@ class BlogCreateView(CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
+
 class BlogUpdateView(UpdateView):
     model = Post
-    fields = ['title', 'body', 'post_image', 'post_categories', 'visibility']  # Include 'visibility'
-    template_name = 'app/blog_update.html'
+    fields = ['title', 'body', 'post_image', 'post_categories', 'visibility']
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
@@ -257,7 +256,7 @@ class BlogDeleteView(DeleteView):
 
 class ShelterCreateView(CreateView):
     model = Shelter
-    form_class = ShelterForm
+    fields = ['name','description','contact_email','owner','phone_number','website','address']
     template_name = 'app/shelter_form.html'
     success_url = reverse_lazy('shelter_list')
 
@@ -265,9 +264,10 @@ class ShelterCreateView(CreateView):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 class ShelterUpdateView(UpdateView):
     model = Shelter
-    form_class = ShelterForm
+    fields = ['name','description','contact_email','owner','phone_number','website','address']
     template_name = 'app/shelter_edit.html'
     success_url = reverse_lazy('shelter_list')
 
@@ -290,26 +290,27 @@ class ShelterDeleteView(DeleteView):
     template_name = 'app/shelter_delete.html'
     success_url = reverse_lazy('shelter_list')
 
-    def get_queryset(self):
-        # Ensure the shelter belongs to the current user
-        return Shelter.objects.filter(owner=self.request.user)
 
-# Pet views
 class PetCreateView(CreateView):
     model = Pet
-    form_class = PetForm
+    fields = ['name', 'animal','breed','age','description','post_image','visibility','owner','shelter']
     template_name = 'app/pet_form.html'
-    success_url = reverse_lazy('pet_list')
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
+
 class PetUpdateView(UpdateView):
     model = Pet
-    form_class = PetForm
-    template_name = 'app/pet_edit.html'
-    success_url = reverse_lazy('pet_list')
+    fields = ['name', 'animal','breed','age','description','post_image','visibility','owner','shelter']
+
+    def get_success_url(self):
+        return reverse_lazy('pet_detail', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 class PetListView(ListView):
     model = Pet

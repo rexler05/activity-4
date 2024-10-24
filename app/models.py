@@ -10,11 +10,11 @@ class Shelter(models.Model):
     contact_email = models.EmailField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE ,null=True, blank=True)  # Link shelter to user
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
+    website = models.CharField(max_length=200, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
-        return self.name
+    def get_absolute_url(self):
+        return reverse('shelter_detail', kwargs={'pk': self.pk})
 
 
 class Pet(models.Model):
@@ -25,8 +25,9 @@ class Pet(models.Model):
         ('FRIENDS', 'Friends')
     ]
 
+
     name = models.CharField(max_length=100)
-    species = models.CharField(max_length=50)
+    animal = models.CharField(max_length=50)
     breed = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
     description = models.TextField(blank=True)
@@ -35,8 +36,8 @@ class Pet(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     shelter = models.ForeignKey(Shelter, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def __str__(self):
-        return self.name
+    def get_absolute_url(self):
+        return reverse('pet_detail', kwargs={'pk': self.pk})
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

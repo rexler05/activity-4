@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, Comment, Pet , Shelter
+from .models import Profile, Comment
 
 
 
@@ -62,27 +62,4 @@ class CommentForm(forms.ModelForm):
         }
 
 
-class ShelterForm(forms.ModelForm):
-    class Meta:
-        model = Shelter
-        fields = ['name', 'description', 'contact_email']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'contact_email': forms.EmailInput(attrs={'class': 'form-control'}),
-        }
 
-class PetForm(forms.ModelForm):
-    class Meta:
-        model = Pet
-        fields = ['name', 'species', 'breed', 'age', 'description', 'post_image', 'shelter', 'visibility']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'species': forms.TextInput(attrs={'class': 'form-control'}),
-            'breed': forms.TextInput(attrs={'class': 'form-control'}),
-            'age': forms.NumberInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'post_image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'shelter': forms.Select(attrs={'class': 'form-control'}),
-            'visibility': forms.Select(attrs={'class': 'form-control'}),
-        }

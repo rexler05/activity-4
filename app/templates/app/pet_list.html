@@ -7,22 +7,28 @@
 <a href="{% url 'pet_form' %}" >+New Pet</a>
 </div>
 
-<div class="pet-list">
+<div class="box-container">
     {% for pet in pets %}
-    <div class="pet-item">
+    <div class="post-box">
+        <div class="post-entry">
+             <h3><a href="{% url 'pet_detail' pet.pk %}">{{ pet.name }}</a></h3>
 
-        <h3><a href="{% url 'pet_detail' pet.pk %}">{{ pet.name }}</a></h3>
-          {% if pet.post_image %}
-            <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}">
-        {% endif %}
-        <p>Animal: {{ pet.species }}</p>
+         <div class="image-detail">
+                    {% if pet.post_image  %}
+                        <a href="{% url 'pet_detail' pet.pk %}">
+                            <img src="{{ pet.post_image.url }}" alt="Post Image" > <!-- Adjusted image styling -->
+                        </a>
+                    {% else %}
+                        <p>No image available</p> <!-- Optional message for posts without images -->
+                    {% endif %}
+         </div>
+        <p>Animal: {{ pet.animal }}</p>
         <p>Breed: {{ pet.breed }}</p>
         <p>Age: {{ pet.age }} years</p>
         <p>Description: {{ pet.description }}</p>
-
+        </div>
     </div>
-    {% empty %}
-    <p>No pets available for adoption.</p>
     {% endfor %}
 </div>
+
 {% endblock content %}
