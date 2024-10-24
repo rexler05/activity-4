@@ -133,92 +133,92 @@ text-align: center;
 }
 
 .post-title h2 {
-    margin-bottom: 10px; /* Space below the title */
+    margin-bottom: 10px;
 }
 
 .post-image {
-    margin-bottom: 10px; /* Space below the image */
+    margin-bottom: 10px;
 }
 
 .image-details {
     width: 100%;
     height: auto;
-    border-radius: 5px; /* Rounded corners for image */
+    border-radius: 5px;
 }
 
 .post-body {
-    margin-bottom: 20px; /* Space below the body text */
+    margin-bottom: 20px;
 }
 
 .comments-section {
-    margin-top: 20px; /* Space above comments section */
+    margin-top: 20px;
 }
 
 .comment {
-    padding: 10px; /* Padding inside each comment */
-    border: 1px solid #ddd; /* Border for comments */
-    border-radius: 4px; /* Rounded corners */
-    margin-bottom: 10px; /* Space between comments */
-    background-color: #f0f0f0; /* Light background color for comments */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
 }
 
 .comment-form {
-    margin-top: 20px; /* Space above the form */
-    padding: 15px; /* Padding inside the form */
-    border: 1px solid #ccc; /* Border around the form */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #f9f9f9; /* Light background color */
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 .comment-form h4 {
-    margin-bottom: 15px; /* Space below the header */
+    margin-bottom: 15px;
 }
 
 .comment-form input[type="text"],
 .comment-form textarea {
-    width: 100%; /* Full width for inputs */
-    padding: 10px; /* Padding inside the inputs */
-    margin-bottom: 10px; /* Space below each input */
-    border: 1px solid #ddd; /* Border for inputs */
-    border-radius: 4px; /* Rounded corners */
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 .comment-form button {
-    background-color: #007bff; /* Button color */
-    color: white; /* Text color */
-    padding: 10px 15px; /* Padding for button */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .comment-form button:hover {
-    background-color: #0056b3; /* Darker color on hover */
+    background-color: #0056b3;
 }
 
 .post-actions {
-    margin-top: 20px; /* Space above the actions */
+    margin-top: 20px;
 }
 
 .action a {
-    text-decoration: none; /* Remove underline from links */
-    color: #007bff; /* Link color */
+    text-decoration: none;
+    color: #007bff;
 }
 
 .action a:hover {
-    text-decoration: underline; /* Underline on hover */
+    text-decoration: underline;
 }
 .action {
-    margin-top: 20px; /* Space above the actions */
+    margin-top: 20px;
 }
 
 .action a {
-    text-decoration: none; /* Remove underline from links */
-    color: #007bff; /* Link color */
+    text-decoration: none;
+    color: #007bff;
 }
 
 .action a:hover {
-    text-decoration: underline; /* Underline on hover */
+    text-decoration: underline;
 }
 
 
@@ -357,57 +357,57 @@ form input {
 
 
   h1 {
-    color: #333; /* Darker color for the header */
-    text-align: center; /* Center the header */
-    margin-bottom: 20px; /* Space below the header */
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 
 .profile-info {
-    margin-bottom: 15px; /* Space between info paragraphs */
-    padding: 10px; /* Inner spacing for paragraphs */
-    border-bottom: 1px solid #e0e0e0; /* Light border for separation */
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .profile-info:last-child {
-    border-bottom: none; /* Remove border for last item */
+    border-bottom: none;
 }
 
 .profile-label {
-    font-weight: bold; /* Bold for labels */
+    font-weight: bold;
 }
 
 .edit-button {
-    display: block; /* Block display for button */
-    margin: 20px auto; /* Center button */
-    padding: 10px 20px; /* Padding for button */
-    font-size: 16px; /* Font size for button */
-    background-color: #007bff; /* Button color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor */
-    text-align: center; /* Center text in button */
-    text-decoration: none; /* No underline */
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
 
 .edit-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #0056b3;
 }
 
 @media (max-width: 768px) {
-    /* Responsive design for smaller screens */
+
     .profile-container {
-        padding: 15px; /* Less padding on smaller screens */
+        padding: 15px;
     }
 
     h1 {
-        font-size: 24px; /* Smaller font size */
+        font-size: 24px;
     }
 }
 
 
-/* Profile Styles */
+
 .profile-container {
     background-color: white;
     padding: 20px;
@@ -433,7 +433,7 @@ form input {
     border-radius: 5px;
 }
 
-/* Button Styles */
+
 .create-button a {
     background-color: #28a745;
     color: white;
@@ -446,7 +446,7 @@ form input {
     background-color: #218838;
 }
 
-/* Comment Section Styles */
+
 .comment-form {
     margin-top: 20px;
 }
@@ -483,16 +483,16 @@ form input {
     }
 }
 
-/* Example CSS for pet listing and form */
+
 
 .pet-list {
-    display: flex;
+     display: flex;
     flex-wrap: wrap;
     gap: 2px;
     justify-content: center;
     width: 100%;
     min-width: 100%;
-     margin-left:5px;
+      margin-left:5px;
 }
 
 
@@ -508,7 +508,7 @@ form input {
     height:auto;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    margin-left:60px;
+     margin-left:20px;
 
 }
 
@@ -518,6 +518,7 @@ form input {
 }
 
 .pet-item img{
+
      height: 100px;
     width:150px;
 }
@@ -533,13 +534,13 @@ form input {
 
 
 .shelter-list {
-    display: flex;
+     display: flex;
     flex-wrap: wrap;
     gap: 2px;
     justify-content: center;
     width: 100%;
     min-width: 100%;
-     margin-left:5px;
+      margin-left:5px;
 }
 
 .shelter-item {
@@ -578,14 +579,13 @@ background-color:aliceblue;
     overflow-y: auto;
 }
 
-/* Pet name styling */
+
 .pet-name {
     font-size: 32px;
     color: #333;
     margin-bottom: 15px;
 }
 
-/* Pet description and details */
 .pet-details {
     font-size: 18px;
     color: #555;
@@ -596,7 +596,7 @@ background-color:aliceblue;
     margin: 10px 0;
 }
 
-/* Pet image styling */
+
 .pet-image img {
     width: 100%;
     height: auto;
@@ -604,7 +604,7 @@ background-color:aliceblue;
     margin-bottom: 20px;
 }
 
-/* Buttons styling */
+
 .btn {
     display: inline-block;
     padding: 10px 15px;
@@ -635,7 +635,7 @@ background-color:aliceblue;
 }
 
 
-/* Container for shelter details */
+
 .shelter-details-container {
     max-width: 800px;
     margin: 0 auto;
@@ -645,14 +645,14 @@ background-color:aliceblue;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Shelter name styling */
+
 .shelter-name {
     font-size: 32px;
     color: #333;
     margin-bottom: 15px;
 }
 
-/* Shelter details and description */
+
 .shelter-details {
     font-size: 18px;
     color: #555;
@@ -663,7 +663,7 @@ background-color:aliceblue;
     margin: 10px 0;
 }
 
-/* Shelter link styling */
+
 .shelter-details a {
     color: #007bff;
     text-decoration: none;
