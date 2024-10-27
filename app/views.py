@@ -1,23 +1,19 @@
 from profile import Profile
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, ProfileUpdateForm
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView , View
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from .models import Post , Profile , Pet , Shelter
+from .models import Post, Profile, Pet, AdoptionEvent, AdoptionApplication
+from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Q
-from .forms import CommentForm
-
-
-
-
-
+from .forms import CommentForm ,AdoptionApplicationForm
 
 class RegisterView(FormView):
     template_name = 'app/register.html'
@@ -43,13 +39,9 @@ class RegisterView(FormView):
         # Add success message
         messages.success(self.request, "Registration successful! You are now logged in.")
 
-        # Redirect to the success URL
-        return super().form_valid(form)
+        # Redirect to profile creation page
+        return redirect('create_profile')  # Adjust to your profile creation view URL
 
-    def form_invalid(self, form):
-        # Add error message when form is invalid
-        messages.error(self.request, "There was an error in your registration. Please correct the errors below.")
-        return super().form_invalid(form)
 
 # Login View
 class LoginView(FormView):
@@ -105,7 +97,6 @@ class ProfileUpdateView(UpdateView):
     def get_object(self, queryset=None):
         return Profile.objects.get(user=self.request.user)
 
-
     def get_initial(self):
         initial = super().get_initial()
         user = self.request.user
@@ -121,20 +112,23 @@ class ProfileUpdateView(UpdateView):
     def form_valid(self, form):
         user = self.request.user
 
-
+        # Update user details
         user.username = form.cleaned_data['username']
         user.first_name = form.cleaned_data['first_name']
         user.last_name = form.cleaned_data['last_name']
         user.email = form.cleaned_data['email']
         user.save()
 
-
         profile = form.save(commit=False)
         profile.user = user
-        profile.save()
+
+        # Handle image separately in case no new image is uploaded
+        if 'image' in form.cleaned_data and form.cleaned_data['image']:
+            profile.image = form.cleaned_data['image']
+
+        profile.save()  # Save the profile including the image if updated
 
         return super().form_valid(form)
-
 
 # Logout View
 def logout_view(request):
@@ -254,62 +248,34 @@ class BlogDeleteView(DeleteView):
     success_url = reverse_lazy('blog')
 
 
-class ShelterCreateView(CreateView):
-    model = Shelter
-    fields = ['name','description','contact_email','owner','phone_number','website','address']
-    template_name = 'app/shelter_form.html'
-    success_url = reverse_lazy('shelter_list')
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
 
 
-class ShelterUpdateView(UpdateView):
-    model = Shelter
-    fields = ['name','description','contact_email','owner','phone_number','website','address']
-    template_name = 'app/shelter_edit.html'
-    success_url = reverse_lazy('shelter_list')
+class OwnerAssignmentMixin:
+    def assign_owner(self, form):
+        if form.cleaned_data['visibility'] == 'PUBLIC':
+            form.instance.owner = None  # Set owner to None for public pets
+        else:
+            form.instance.owner = self.request.user  # Set owner to the current user for private pets
 
-class ShelterListView(ListView):
-    model = Shelter
-    context_object_name = 'shelters'
-    template_name = 'app/shelter_list.html'
-
-    def get_queryset(self):
-        return Shelter.objects.filter(owner=self.request.user)
-
-class ShelterDetailView(DetailView):
-    model = Shelter
-    template_name = 'app/shelter_detail.html'
-    context_object_name = 'shelter'
-
-
-class ShelterDeleteView(DeleteView):
-    model = Shelter
-    template_name = 'app/shelter_delete.html'
-    success_url = reverse_lazy('shelter_list')
-
-
-class PetCreateView(CreateView):
+class PetCreateView(OwnerAssignmentMixin, CreateView):
     model = Pet
-    fields = ['name', 'animal','breed','age','description','post_image','visibility','owner','shelter']
+    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'visibility']
     template_name = 'app/pet_form.html'
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        self.assign_owner(form)
         return super().form_valid(form)
 
-
-class PetUpdateView(UpdateView):
+class PetUpdateView(OwnerAssignmentMixin, UpdateView):
     model = Pet
-    fields = ['name', 'animal','breed','age','description','post_image','visibility','owner','shelter']
+    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'visibility']
+    template_name = 'app/pet_edit.html'
 
     def get_success_url(self):
         return reverse_lazy('pet_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        self.assign_owner(form)
         return super().form_valid(form)
 
 class PetListView(ListView):
@@ -318,7 +284,8 @@ class PetListView(ListView):
     template_name = 'app/pet_list.html'
 
     def get_queryset(self):
-        return Pet.objects.filter(owner=self.request.user)
+        # Include pets that are public and not adopted
+        return Pet.objects.filter(visibility='PUBLIC', is_adopted=False)
 
 class PetDetailView(DetailView):
     model = Pet
@@ -326,11 +293,119 @@ class PetDetailView(DetailView):
     context_object_name = 'pet'
 
     def get_queryset(self):
-        # Ensure the pet belongs to the current user or is public
-        return Pet.objects.filter(owner=self.request.user) | Pet.objects.filter(visibility='PUBLIC')
+        return Pet.objects.filter(is_adopted=False)
 
 class PetDeleteView(DeleteView):
     model = Pet
     template_name = 'app/pet_delete.html'
     success_url = reverse_lazy('pet_list')
 
+    def get_queryset(self):
+        return Pet.objects.filter(owner=self.request.user)
+
+
+
+class AdoptionApplicationCreateView(CreateView):
+    model = AdoptionApplication
+    form_class = AdoptionApplicationForm
+    template_name = 'app/adoption_application_form.html'
+    success_url = reverse_lazy('pet_list')  # Redirect after successful submission
+
+    def form_valid(self, form):
+        pet_id = self.kwargs['pk']
+        pet = get_object_or_404(Pet, pk=pet_id)
+        form.instance.pet = pet  # Associate the pet with the application
+        form.instance.user = self.request.user  # Associate the logged-in user with the application
+        return super().form_valid(form)
+
+
+class AdoptionApplicationListView(ListView):
+    model = AdoptionApplication
+    template_name = 'app/adoption_application.html'
+    context_object_name = 'applications'
+
+    def get_queryset(self):
+        return AdoptionApplication.objects.all()  # Adjust as needed for filtering
+
+class AdoptionApplicationDetailView(DetailView):
+    model = AdoptionApplication
+    template_name = 'app/adoption_application_detail.html'
+    context_object_name = 'application'
+
+class AdoptionApplicationApproveView(View):
+    def post(self, request, pk):
+        application = get_object_or_404(AdoptionApplication, pk=pk)
+
+        # Update pet status to adopted
+        application.pet.is_adopted = True
+        application.pet.save()
+
+        # Update application status to approved
+        application.status = 'APPROVED'
+        application.save()
+
+        # Record the event
+        AdoptionEvent.objects.create(
+            event_type='APPLICATION_APPROVED',
+            pet=application.pet,
+            user=request.user,
+            details={'reason': application.reason_for_adoption},
+        )
+
+        messages.success(request, f"Application for {application.pet.name} has been approved.")
+        return redirect('adoption')
+
+class AdoptionApplicationDenyView(View):
+    def post(self, request, pk):
+        application = get_object_or_404(AdoptionApplication, pk=pk)
+
+        # Update application status to denied
+        application.status = 'DENIED'
+        application.save()
+
+        # Record the event
+        AdoptionEvent.objects.create(
+            event_type='APPLICATION_DENIED',
+            pet=application.pet,
+            user=request.user,
+            details={'reason': application.reason_for_adoption},
+        )
+
+        messages.success(request, f"Application for {application.pet.name} has been denied.")
+        return redirect('adoption')
+
+
+def get_pet_history(pet_id):
+    events = AdoptionEvent.objects.filter(pet_id=pet_id).order_by('timestamp')
+    state = {
+        'adopted': False,
+        'application_status': 'PENDING',
+    }
+
+    for event in events:
+        if event.event_type == 'APPLICATION_APPROVED':
+            state['adopted'] = True
+            state['application_status'] = 'APPROVED'
+        elif event.event_type == 'APPLICATION_DENIED':
+            state['application_status'] = 'DENIED'
+
+    return state
+
+class PetEventHistoryView(DetailView):
+    model = Pet  # Assuming you want to fetch events related to the Pet model
+    template_name = 'app/adoption_transaction.html'  # Adjust the template name accordingly
+    context_object_name = 'pet'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = AdoptionEvent.objects.filter(pet=self.object)  # Adjust to fit your model
+        return context
+
+    def get_object(self, queryset=None):
+        pet_id = self.kwargs.get('pet_id')
+        return self.get_queryset().get(id=pet_id)  # Fetch the pet object using pet_id
+
+class EventDetailView(View):
+    def get(self, request, event_id):
+        event = get_object_or_404(AdoptionEvent, id=event_id)  # Get the specific event
+        return render(request, 'app/event_detail.html', {'event': event})  # Pass the event to the template

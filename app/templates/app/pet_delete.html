@@ -1,17 +1,11 @@
-{% extends 'app/base.html'%}
-{% load static %}
-{% block content%}
-<div class="create-container">
-<div class="form-container">
-       <h1>Delete Post</h1>
-    <form action ="{% url 'pet_delete' object.pk %}" method="post">
-      {% csrf_token %}
-      <p> are you sure you want to delete "{{pet.name}}"?</p>
-      <input type="submit" value="Confirm">
-    </form>
-</div>
+{% extends 'app/base.html' %}
 
-</div>
-
-
-{% endblock content%}
+{% block content %}
+<h2>Confirm Deletion</h2>
+<p>Are you sure you want to delete "{{ pet.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+</form>
+<a href="{% url 'pet_list' %}">Cancel</a>
+{% endblock %}

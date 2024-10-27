@@ -15,25 +15,36 @@
 <body>
     <!-- Header Section -->
     <header class="main-header">
-        <span class="welcome-message">Welcome, {{ user.username }}!</span>
+
+
+           <nav class="navbar">
+               <span class="welcome-message">Welcome, {{ user.username }}!</span>
         <div class="search-btn">
             <label>
                 search
             </label>
-            <input>
+            <input placeholder="search">
+
             </input>
         </div>
-
-        <nav>
             <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
             <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
-            <a href="{% url 'blog' %}"><i class="fas fa-paw"></i> Adoption</a>
-             <a href="{% url 'pet_list' %}"><i class="fas fa-paw"></i> Pet List</a>
-             <a href="{% url 'shelter_list' %}"><i class="fas fa-paw"></i> Shelter List</a>
+            <a href="{% url 'blog' %}"><i class="fas fa-paw"></i> Pet News Feed</a>
+            <a href="{% url 'pet_list' %}"><i class="fas fa-paw"></i> Pet List</a>
+             <a href="{% url 'adoption' %}"><i class="fas fa-envelope"></i> Pet Application</a>
             <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
             <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
-            <a href="{% url 'account_settings' %}"><i class="fas fa-cog"></i> Settings</a>
-            <a class="logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <div class="dropdown">
+                  {% if user.profile.image %}
+                    <img src="{{ user.profile.image.url }}" alt="" class="dropbtn">
+                {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Image" class="dropbtn">
+                {% endif %}
+                <div class="dropdown-content">
+                     <a href="{% url 'account_settings' %}">Settings</a>
+                   <a class="logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
         </nav>
     </header>
 

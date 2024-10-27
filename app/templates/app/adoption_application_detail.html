@@ -1,0 +1,21 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content %}
+<h1>Application Details for {{ application.pet.name }}</h1>
+<p><strong>Applicant:</strong> {{ application.user.username }}</p>
+<p><strong>Reason for Adoption:</strong> {{ application.reason_for_adoption }}</p>
+<p><strong>Additional Details:</strong> {{ application.additional_details }}</p>
+<p><strong>Status:</strong> {{ application.status }}</p>
+
+<form action="{% url 'adoption_approval' pk=application.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Approve Adoption</button>
+</form>
+
+<form action="{% url 'adoption_application_deny' pk=application.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Deny Adoption</button>
+</form>
+
+<a href="{% url 'adoption' %}">Back to Applications</a>
+{% endblock %}

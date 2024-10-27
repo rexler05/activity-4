@@ -5,96 +5,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Escultura Website</title>
-
-
- <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
-
 </head>
 <body>
-<div class="Header">
+<div class="Header"></div>
 
-
-</div>
-
-<div class ="register-container">
-{% block content %}
-<div class="register-form">
-{% if messages %}
-    <div>
-        {% for message in messages %}
-            <div class="{% if message.tags %} {{ message.tags }} {% endif %}">
-                {{ message }}
+<div class="register-container">
+    {% block content %}
+    <div class="register-form">
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <div class="{% if message.tags %} {{ message.tags }} {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
-{% endif %}
+        {% endif %}
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.non_field_errors }}  <!-- Shows general errors not linked to a specific field -->
-    <div>
-        {{ form.username.label_tag }}
-        {{ form.username }}
-        {{ form.username.errors }}
+        <form method="POST" enctype="multipart/form-data">  <!-- Add enctype for file uploads -->
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+            <div>
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+            </div>
+            <div>
+                {{ form.middle_name.label_tag }}
+                {{ form.middle_name }}
+            </div>
+            <div>
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            <div>
+                {{ form.age.label_tag }}
+                {{ form.age }}
+                {{ form.age.errors }}
+            </div>
+            <div>
+                {{ form.gender.label_tag }}
+                {{ form.gender }}
+                {{ form.gender.errors }}
+            </div>
+            <div>
+                {{ form.phone_number.label_tag }}
+                {{ form.phone_number }}
+                {{ form.phone_number.errors }}
+            </div>
+            <div>
+                {{ form.password1.label_tag }}
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+            <div>
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+            <div class="form-button">
+                <button type="submit">Register</button>
+            </div>
+            <a href="{% url 'login' %}">login Here!</a>
+        </form>
     </div>
-    <div>
-        {{ form.first_name.label_tag }}
-        {{ form.first_name }}
-    </div>
-    <div>
-        {{ form.middle_name.label_tag }}
-        {{ form.middle_name }}
-    </div>
-    <div>
-        {{ form.last_name.label_tag }}
-        {{ form.last_name }}
-        {{ form.last_name.errors }}
-    </div>
-    <div>
-        {{ form.email.label_tag }}
-        {{ form.email }}
-        {{ form.email.errors }}
-    </div>
-    <div>
-        {{ form.age.label_tag }}
-        {{ form.age }}
-        {{ form.age.errors }}
-    </div>
-    <div>
-        {{ form.gender.label_tag }}
-        {{ form.gender }}
-        {{ form.gender.errors }}
-    </div>
-    <div>
-        {{ form.phone_number.label_tag }}
-        {{ form.phone_number }}
-        {{ form.phone_number.errors }}
-    </div>
-    <div>
-        {{ form.password1.label_tag }}
-        {{ form.password1 }}
-        {{ form.password1.errors }}
-    </div>
-    <div>
-        {{ form.password2.label_tag }}
-        {{ form.password2 }}
-        {{ form.password2.errors }}
-        <div class="form-button">
-            <button href ="{% url 'register' %}"> Register</button>
-        </div>
-
-    </div>
-
-    <a href="{% url 'login' %}" >login Here!</a>
-</form>
+    {% endblock content %}
 </div>
-{% endblock content %}
-
-</div>
-
-
-
 </body>
 </html>

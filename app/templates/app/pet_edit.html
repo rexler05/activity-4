@@ -1,11 +1,13 @@
 {% extends 'app/base.html' %}
+
 {% block content %}
+<h2>Update Pet: {{ pet.name }}</h2>
 
-
-<form action="{% url 'pet_edit' pet.pk %}" method="post" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save Pet</button>
+    <button type="submit" class="btn btn-primary">Update Pet</button>
 </form>
 
-{% endblock content %}
+<a href="{% url 'pet_detail' pet.pk %}">Back to Pet Detail</a>
+{% endblock %}

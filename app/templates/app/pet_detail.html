@@ -1,26 +1,22 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<div class="pet-details-container">
-        <div class="post-actions">
-            <a href="{% url 'pet_edit' pet.pk %}">+ Edit Pet</a>
-            <a href="{% url 'pet_delete' pet.pk %}" >- Delete Details</a>
-        </div>
-    <h2 class="pet-name">{{ pet.name }}</h2>
-        {% if pet.post_image %}
-        <div class="pet-image">
-            <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}">
-        </div>
+<h2>{{ pet.name }}</h2>
+<p><strong>Animal:</strong> {{ pet.animal }}</p>
+<p><strong>Breed:</strong> {{ pet.breed }}</p>
+<p><strong>Age:</strong> {{ pet.age }}</p>
+<p><strong>Description:</strong> {{ pet.description }}</p>
+{% if pet.post_image %}
+    <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}">
+{% endif %}
+<p>
+    <a href="{% url 'pet_edit' pet.pk %}">Edit</a>
+    {% if request.user.is_staff %}  <!-- Check if the user is admin -->
+        <a href="{% url 'pet_delete' pet.pk %}">Delete</a>
     {% endif %}
-    <div class="pet-details">
-        <p>Animal: {{ pet.animal }}</p>
-        <p>Breed: {{ pet.breed }}</p>
-        <p>Age: {{ pet.age }} years</p>
-        <p>Description: {{ pet.description }}</p>
-    </div>
-
-    <p>Visibility: {{ pet.visibility }}</p>
-
-
-</div>
-{% endblock content %}
+    {% if pet.visibility == 'PUBLIC' and not pet.is_adopted %}
+        <a href="{% url 'adoption_application_form' pet.pk %}" class="btn btn-info">Apply for Adoption</a>
+    {% endif %}
+</p>
+<a href="{% url 'pet_list' %}">Back to Pet List</a>
+{% endblock %}
