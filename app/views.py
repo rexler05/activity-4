@@ -235,6 +235,7 @@ class BlogCreateView(CreateView):
 class BlogUpdateView(UpdateView):
     model = Post
     fields = ['title', 'body', 'post_image', 'post_categories', 'visibility']
+    template_name = 'app/blog_update.html'
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})

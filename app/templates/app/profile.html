@@ -4,27 +4,43 @@
 {% block content %}
 <div class="profile-box-container">
     <div class="profile-container">
-        <h1>{{ object.user.username }}'s Profile</h1>
-        <p>Age: {{ object.age }}</p>
-        <p>Gender: {{ object.gender }}</p>
-        <p>Phone: {{ object.phone_number }}</p>
-        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+      <div class="profile-box" style="background-image: url('{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_profile.jpg' %}{% endif %}'); ">
+        <div class="profile-box-left">
+            <h4>{{ object.user.username }}</h4>
+            {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}" alt="Profile Image" class="dropbtn">
+            {% else %}
+                <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Image" class="dropbtn">
+            {% endif %}
+            <div class="profile_edit_buttton">
+                 <a href="{% url 'edit_profile' %}">Edit Profile</a>
+            </div>
+        </div>
+        <div class="profile-box-right">
+            <h4>  </h4>
+        </div>
+    </div>
 
         <div class="profile-posts">
-            <h2>Your Posts</h2>
             {% for post in posts %}
                 <div class="profile-post-box">
-                    <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
+                    <div class="post-title">
+                        <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
+                    </div>
+
                     <div class="profile-post-image">
                         {% if post.post_image %}
                             <a href="{% url 'blog_detail' post.pk %}" >
                                 <img src="{{ post.post_image.url }}" alt="Post Image">
                             </a>
                         {% else %}
-                            <p>No image available</p>
+                            <p class="no-image">No image available</p>
                         {% endif %}
                     </div>
-                    <p>{{ post.body|truncatewords:30 }}</p>
+                      <div class="pet-description">
+                          <p>{{ post.body|truncatewords:30 }}</p>
+                      </div>
+
                 </div>
             {% empty %}
                 <p>No posts available.</p>
