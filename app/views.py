@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, ProfileUpdateForm
@@ -319,20 +320,26 @@ class AdoptionApplicationCreateView(CreateView):
         return super().form_valid(form)
 
 
-class AdoptionApplicationListView(ListView):
+class AdoptionApplicationListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = AdoptionApplication
     template_name = 'app/adoption_application.html'
     context_object_name = 'applications'
 
+    def test_func(self):
+        return self.request.user.is_staff
+
     def get_queryset(self):
         return AdoptionApplication.objects.all()  # Adjust as needed for filtering
 
-class AdoptionApplicationDetailView(DetailView):
+class AdoptionApplicationDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = AdoptionApplication
     template_name = 'app/adoption_application_detail.html'
     context_object_name = 'application'
 
-class AdoptionApplicationApproveView(View):
+    def test_func(self):
+        return self.request.user.is_staff
+
+class AdoptionApplicationApproveView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, pk):
         application = get_object_or_404(AdoptionApplication, pk=pk)
 
@@ -355,7 +362,10 @@ class AdoptionApplicationApproveView(View):
         messages.success(request, f"Application for {application.pet.name} has been approved.")
         return redirect('adoption')
 
-class AdoptionApplicationDenyView(View):
+    def test_func(self):
+        return self.request.user.is_staff
+
+class AdoptionApplicationDenyView(LoginRequiredMixin, UserPassesTestMixin, View):
     def post(self, request, pk):
         application = get_object_or_404(AdoptionApplication, pk=pk)
 
@@ -374,27 +384,16 @@ class AdoptionApplicationDenyView(View):
         messages.success(request, f"Application for {application.pet.name} has been denied.")
         return redirect('adoption')
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-def get_pet_history(pet_id):
-    events = AdoptionEvent.objects.filter(pet_id=pet_id).order_by('timestamp')
-    state = {
-        'adopted': False,
-        'application_status': 'PENDING',
-    }
-
-    for event in events:
-        if event.event_type == 'APPLICATION_APPROVED':
-            state['adopted'] = True
-            state['application_status'] = 'APPROVED'
-        elif event.event_type == 'APPLICATION_DENIED':
-            state['application_status'] = 'DENIED'
-
-    return state
-
-class PetEventHistoryView(DetailView):
+class PetEventHistoryView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Pet  # Assuming you want to fetch events related to the Pet model
-    template_name = 'app/adoption_transaction.html'  # Adjust the template name accordingly
+    template_name = 'app/adoption_transaction.html'
     context_object_name = 'pet'
+
+    def test_func(self):
+        return self.request.user.is_staff
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -405,7 +404,10 @@ class PetEventHistoryView(DetailView):
         pet_id = self.kwargs.get('pet_id')
         return self.get_queryset().get(id=pet_id)  # Fetch the pet object using pet_id
 
-class EventDetailView(View):
+class EventDetailView(LoginRequiredMixin, UserPassesTestMixin, View):
     def get(self, request, event_id):
         event = get_object_or_404(AdoptionEvent, id=event_id)  # Get the specific event
         return render(request, 'app/event_detail.html', {'event': event})  # Pass the event to the template
+
+    def test_func(self):
+        return self.request.user.is_staff

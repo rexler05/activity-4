@@ -2,32 +2,35 @@
 {% load static %}
 
 {% block content %}
-<div class="profile-container">
-    <h1>{{ object.user.username }}'s Profile</h1>
-    <p>Age: {{ object.age }}</p>
-    <p>Gender: {{ object.gender }}</p>
-    <p>Phone: {{ object.phone_number }}</p>
-    <a href="{% url 'edit_profile' %}">Edit Profile</a>
+<div class="profile-box-container">
+    <div class="profile-container">
+        <h1>{{ object.user.username }}'s Profile</h1>
+        <p>Age: {{ object.age }}</p>
+        <p>Gender: {{ object.gender }}</p>
+        <p>Phone: {{ object.phone_number }}</p>
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
 
-    <div class="profile-posts">
-        <h2>Your Posts</h2>
-        {% for post in posts %}
-            <div class="profile-post-box">
-                <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
-                <div class="profile-post-image">
-                    {% if post.post_image %}
-                        <a href="{% url 'blog_detail' post.pk %}" >
-                            <img src="{{ post.post_image.url }}" alt="Post Image">
-                        </a>
-                    {% else %}
-                        <p>No image available</p>
-                    {% endif %}
+        <div class="profile-posts">
+            <h2>Your Posts</h2>
+            {% for post in posts %}
+                <div class="profile-post-box">
+                    <h3><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h3>
+                    <div class="profile-post-image">
+                        {% if post.post_image %}
+                            <a href="{% url 'blog_detail' post.pk %}" >
+                                <img src="{{ post.post_image.url }}" alt="Post Image">
+                            </a>
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                    </div>
+                    <p>{{ post.body|truncatewords:30 }}</p>
                 </div>
-                <p>{{ post.body|truncatewords:30 }}</p>
-            </div>
-        {% empty %}
-            <p>No posts available.</p>
-        {% endfor %}
+            {% empty %}
+                <p>No posts available.</p>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
 {% endblock content %}
