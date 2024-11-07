@@ -72,23 +72,16 @@ class LoginPageView(FormView):
 @method_decorator(login_required, name='dispatch')
 class ProfileView(DetailView):
     model = Profile
-    template_name = 'app/account_settings.html'
-
-    def get_object(self, queryset=None):
-        return Profile.objects.get(user=self.request.user)
-
-@method_decorator(login_required, name='dispatch')
-class ProfilePageView(DetailView):
-    model = Profile
-    template_name = 'app/profile.html'  # Create this template
+    template_name = 'app/profile.html'
 
     def get_object(self, queryset=None):
         return Profile.objects.get(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(author=self.request.user)  # Fetch user's posts
+        context['posts'] = Post.objects.filter(author=self.request.user)  # User posts
         return context
+
 
 
 @method_decorator(login_required, name='dispatch')

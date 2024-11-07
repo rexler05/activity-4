@@ -42,7 +42,7 @@
                 <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Image" class="dropbtn">
             {% endif %}
             <div class="dropdown-content">
-                <a href="{% url 'account_settings' %}">Settings</a>
+                <a href="{% url 'profile' %}">Settings</a>
 
                 <!-- Logout Form (POST method) -->
                 <form action="{% url 'logout' %}" method="post">

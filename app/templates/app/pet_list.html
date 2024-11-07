@@ -1,17 +1,28 @@
 {% extends 'app/base.html' %}
-
+{% load static %}
 {% block content %}
-<h1>Pet List</h1>
 
 {% if user.is_staff %}
     <a href="{% url 'pet_form' %}" class="btn btn-primary">Add New Pet</a>
 {% endif %}
 
-<ul>
+<div class="box-container">
     {% for pet in pets %}
-        <li>
-            <a href="{% url 'pet_detail' pet.pk %}">{{ pet.name }}</a>
-        </li>
+        <div class="post-box">
+            <div class="post-entry">
+                <h2><a href="{% url 'pet_detail' pet.pk %}">{{ pet.name }}</a></h2>
+                <div class="image-detail">
+                    {% if pet.post_image %}
+                        <a href="{% url 'pet_detail' pet.pk %}">
+                            <img src="{{ pet.post_image.url }}" alt="Post Image" > <!-- Adjusted image styling -->
+                        </a>
+                    {% else %}
+                        <p>No image available</p> <!-- Optional message for posts without images -->
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     {% endfor %}
-</ul>
-{% endblock %}
+</div>
+
+{% endblock content %}
