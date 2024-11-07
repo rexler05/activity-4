@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, Comment ,AdoptionApplication
+from .models import Profile, Comment , AdoptionApplication
 
 
 class RegistrationForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False)
-    middle_name = forms.CharField(max_length=30, required=False)
+    first_name = forms.CharField(max_length=30, required=True)
+    middle_name = forms.CharField(max_length=30, required=True)
     last_name = forms.CharField(max_length=30, required=True)
     email = forms.EmailField(max_length=254)
     age = forms.IntegerField(required=True)
@@ -28,29 +28,17 @@ class ProfileUpdateForm(forms.ModelForm):
     age = forms.IntegerField(min_value=18, required=True, label="Age")
     gender = forms.ChoiceField(choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other')], required=True, label="Gender")
     phone_number = forms.CharField(max_length=15, required=True, label="Phone Number")
-    image = forms.ImageField(required=False, label="Profile Picture")  # Add image field
+    image = forms.ImageField(required=False, label="Profile Picture")
 
     class Meta:
         model = Profile
-        fields = ['username', 'first_name', 'middle_name', 'last_name', 'email', 'age', 'gender', 'phone_number',
-                  'image']
+        fields = ['username', 'first_name', 'middle_name', 'last_name', 'email', 'age', 'gender', 'phone_number', 'image']
 
     def save(self, commit=True):
-        user = super().save(commit=False)
-        user.username = self.cleaned_data['username']
-        user.first_name = self.cleaned_data['first_name']
-        user.middle_name = self.cleaned_data['middle_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.email = self.cleaned_data['email']
-
+        profile = super().save(commit=False)
         if commit:
-            user.save()
-            # Update the profile image if provided
-            profile = self.instance  # Get the current profile instance
-            profile.image = self.cleaned_data.get('image', profile.image)  # Use existing image if not updated
             profile.save()
-
-        return user
+        return profile
 
 class CommentForm(forms.ModelForm):
     class Meta:

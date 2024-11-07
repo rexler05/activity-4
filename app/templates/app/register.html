@@ -15,7 +15,7 @@
     {% block content %}
     <div class="register-form">
         {% if messages %}
-            <div>
+            <div>1
                 {% for message in messages %}
                     <div class="{% if message.tags %} {{ message.tags }} {% endif %}">
                         {{ message }}
@@ -23,7 +23,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-
         <form method="POST" enctype="multipart/form-data">  <!-- Add enctype for file uploads -->
             {% csrf_token %}
             {{ form.non_field_errors }}

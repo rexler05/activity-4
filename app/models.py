@@ -59,7 +59,8 @@ class Profile(models.Model):
     gender = models.CharField(max_length=1)
     phone_number = models.CharField(max_length=15)
     middle_name = models.CharField(max_length=30, blank=True)
-    image = models.ImageField(upload_to='profile_images/', blank=True, default='default_profile.png')
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+
 
     def __str__(self):
         return str(self.user)
@@ -79,6 +80,7 @@ class Post(models.Model):
     post_categories = models.CharField(max_length=100)
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='EVERYONE')
     date_posted = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.title

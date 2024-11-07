@@ -1,7 +1,7 @@
 from profile import Profile
-from django.urls import reverse
 from django.shortcuts import render, redirect , get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LogoutView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.utils.decorators import method_decorator
@@ -11,10 +11,12 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView , View
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .models import Post, Profile, Pet, AdoptionEvent, AdoptionApplication
-from django.utils import timezone
 from django.contrib import messages
 from django.db.models import Q
 from .forms import CommentForm ,AdoptionApplicationForm
+
+
+
 
 class RegisterView(FormView):
     template_name = 'app/register.html'
@@ -41,11 +43,11 @@ class RegisterView(FormView):
         messages.success(self.request, "Registration successful! You are now logged in.")
 
         # Redirect to profile creation page
-        return redirect('create_profile')  # Adjust to your profile creation view URL
+        return redirect('home')  # Adjust to your profile creation view URL
 
 
 # Login View
-class LoginView(FormView):
+class LoginPageView(FormView):
     template_name = 'app/login.html'
     form_class = AuthenticationForm
     success_url = reverse_lazy('home')
@@ -108,36 +110,37 @@ class ProfileUpdateView(UpdateView):
         return initial
 
     def get_success_url(self):
-        return reverse_lazy('account_settings')
+        return reverse_lazy('account_settings')  # Adjust the success URL as needed
 
     def form_valid(self, form):
-        user = self.request.user
-
         # Update user details
+        user = self.request.user
         user.username = form.cleaned_data['username']
         user.first_name = form.cleaned_data['first_name']
         user.last_name = form.cleaned_data['last_name']
         user.email = form.cleaned_data['email']
         user.save()
 
+        # Handle profile save
         profile = form.save(commit=False)
         profile.user = user
 
-        # Handle image separately in case no new image is uploaded
-        if 'image' in form.cleaned_data and form.cleaned_data['image']:
-            profile.image = form.cleaned_data['image']
+        # Handle image field logic
+        image = form.cleaned_data.get('image')
+        if image:
+            profile.image = image
+        else:
+            profile.image = None  # Set image to None if no image is uploaded
 
-        profile.save()  # Save the profile including the image if updated
+        profile.save()
 
         return super().form_valid(form)
 
-# Logout View
-def logout_view(request):
-    logout(request)
-    return redirect('login')
 
-def home(request):
-    return render(request, 'app/home.html')
+# Logout View
+class LogoutPageView(LogoutView):
+    next_page = reverse_lazy('login')  # Redirect to login page after logout
+
 
 
 

@@ -43,7 +43,14 @@
             {% endif %}
             <div class="dropdown-content">
                 <a href="{% url 'account_settings' %}">Settings</a>
-                <a class="logout-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+                <!-- Logout Form (POST method) -->
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
             </div>
         </div>
     </nav>
