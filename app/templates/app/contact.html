@@ -1,6 +1,29 @@
-{% extends 'app/base.html'%}
+{% extends 'app/base.html' %}
 {% load static %}
+{% block content %}
+    <div class="contact-container">
+        <!-- Hero Section -->
+        <section class="contact-header">
+            <h1>Let's Get in Touch!</h1>
+            <p>Have any questions or need assistance? Feel free to send me a message!</p>
+        </section>
 
-{% block content%}
-<h1>this is contact</h1>
-{% endblock content%}
+        <!-- Contact Info Section -->
+        <section class="contact-info">
+            <div class="contact-info-item">
+                <h2>Contact Information</h2>
+                <p><strong>Email:</strong> your.email@example.com</p>
+                <p><strong>Phone:</strong> +123 456 7890</p>
+                <p><strong>Address:</strong> 1234 Some Street, City, Country</p>
+            </div>
+
+            <div class="contact-info-item">
+                <h2>Social Media</h2>
+                <ul class="social-media">
+                    <li><a href="https://facebook.com" target="_blank"><img src="{% static 'images/icons8-facebook-96.png' %}" alt="Facebook"></a></li>
+                    <li><a href="https://twitter.com" target="_blank"><img src="{% static 'images/icons8-twitter-96.png' %}" alt="Twitter"></a></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

@@ -1,17 +1,17 @@
-{% extends 'app/base.html'%}
+{% extends 'app/base.html' %}
 {% load static %}
-{% block content%}
-<div class="create-container">
-<div class="form-container">
-       <h1>Delete Post</h1>
-    <form action ="{% url 'blog_delete' object.pk %}" method="post">
-      {% csrf_token %}
-      <p> are you sure you want to delete "{{post.title}}"?</p>
-      <input type="submit" value="Confirm">
-    </form>
+{% block content %}
+<div class="delete-container">
+    <div class="form-container">
+        <h1>Delete Post</h1>
+        <form action="{% url 'blog_delete' object.pk %}" method="post">
+            {% csrf_token %}
+            <p>Are you sure you want to delete the post titled "<strong>{{ post.title }}</strong>"?</p>
+            <div class="confirmation-buttons">
+                <input type="submit" value="Confirm" class="confirm-btn">
+                <a href="{% url 'blog' %}" class="cancel-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
-
-</div>
-
-
-{% endblock content%}
+{% endblock content %}

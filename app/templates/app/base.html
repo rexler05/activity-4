@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escultura Website</title>
+    <title>Pet Adoption</title>
 
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,55 +13,62 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
-    <!-- Header Section -->
-    <header class="main-header">
+    <div class="wrapper">
+        <div class="sidebar">
+
+            <ul class="sidebar-menu">
+               <li class="user-info">
+                    {% if user.is_authenticated %}
+                        <img class="user-avatar"
+                             src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_profile.jpg' %}{% endif %}"
+                             alt="Profile Image">
+                    {% else %}
+                        <img class="user-avatar" src="{% static 'images/favicon.ico' %}" alt="Default Profile Image">
+                    {% endif %}
+                </li>
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i><span> Home </span></a></li>
+                    <li><a href="{% url 'blog' %}"><i class="fas fa-paw"></i><span> News </span></a></li>
+                    <li><a href="{% url 'pet_list' %}"><i class="fas fa-paw"></i><span> Pet </span></a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i><span> About </span></a></li>
+                    <li><a href="{% url 'contact' %}"><i class="fas fa-envelope"></i><span> Contact </span></a></li>
 
 
-      <nav class="navbar">
-        <span class="welcome-message">Welcome, {{ user.username }}!</span>
-        <div class="search-btn">
-            <label>
-                search
-            </label>
-            <input placeholder="search">
-            </input>
+                     {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i><span> Profile</span></a></li>
+                    {% if user.is_staff %}
+                        <li><a href="{% url 'adoption_application' %}"><i class="fas fa-envelope"></i><span> Application</span></a></li>
+                    {% endif %}
+
+                     <li>
+                        <a href="{% url 'notification_list' %}" class="sidebar-menu-item" >
+                            <i class="fas fa-bell"></i> Notification
+                            {% if unread_notification_count > 0 %}
+                                <span class="notification-badge">{{ unread_notification_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit"><i class="fas fa-sign-out-alt"></i><span> Logout</span></button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="login-link"><i class="fas fa-sign-in-alt"></i><span> Login</span></a></li>
+                {% endif %}
+
+            </ul>
+
+
+
         </div>
-        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
-        <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
-        <a href="{% url 'blog' %}"><i class="fas fa-paw"></i> Pet News Feed</a>
-        <a href="{% url 'pet_list' %}"><i class="fas fa-paw"></i> Pet List</a>
-        {% if user.is_staff %}
-            <a href="{% url 'adoption' %}"><i class="fas fa-envelope"></i> Pet Application</a>
-        {% endif %}
-        <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
-        <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
-        <div class="dropdown">
-            {% if user.profile.image %}
-                <img src="{{ user.profile.image.url }}" alt="" class="dropbtn">
-            {% else %}
-                <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Image" class="dropbtn">
-            {% endif %}
-            <div class="dropdown-content">
-                <a href="{% url 'profile' %}">Settings</a>
 
-                <!-- Logout Form (POST method) -->
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </nav>
-    </header>
 
-    <main class="container">
-        <section class="contents">
+        <div class="content">
             {% block content %}
-            {% endblock content %}
-        </section>
-    </main>
 
+            {% endblock content %}
+        </div>
+    </div>
 </body>
 </html>

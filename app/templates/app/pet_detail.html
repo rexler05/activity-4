@@ -1,22 +1,36 @@
 {% extends 'app/base.html' %}
-
+{% load static %}
 {% block content %}
-<h2>{{ pet.name }}</h2>
-<p><strong>Animal:</strong> {{ pet.animal }}</p>
-<p><strong>Breed:</strong> {{ pet.breed }}</p>
-<p><strong>Age:</strong> {{ pet.age }}</p>
-<p><strong>Description:</strong> {{ pet.description }}</p>
-{% if pet.post_image %}
-    <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}">
-{% endif %}
-<p>
-    <a href="{% url 'pet_edit' pet.pk %}">Edit</a>
-    {% if request.user.is_staff %}  <!-- Check if the user is admin -->
-        <a href="{% url 'pet_delete' pet.pk %}">Delete</a>
-    {% endif %}
-    {% if pet.visibility == 'PUBLIC' and not pet.is_adopted %}
-        <a href="{% url 'adoption_application_form' pet.pk %}" class="btn btn-info">Apply for Adoption</a>
-    {% endif %}
-</p>
-<a href="{% url 'pet_list' %}">Back to Pet List</a>
-{% endblock %}
+<div class="pet-details-container-box">
+    <div class="pet-details-container">
+        <div class="pet-details-image-box">
+            {% if pet.post_image %}
+            <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}" class="pet-image">
+            {% else %}
+            <img src="{% static 'images/default-pet.jpg' %}" alt="No Image Available" class="pet-image">
+            {% endif %}
+        </div>
+
+        <div class="description-of-pet">
+                <h2 class="pet-name">{{ pet.name }}</h2>
+                <p><strong class="pet-label">Animal:</strong> {{ pet.animal }}</p>
+                <p><strong class="pet-label">Breed:</strong> {{ pet.breed }}</p>
+                <p><strong class="pet-label">Age:</strong> {{ pet.age }}</p>
+                <p><strong class="pet-label">Description:</strong> {{ pet.description }}</p>
+        </div>
+
+
+
+    <div class="pet-action-buttons">
+        {% if request.user.is_staff %}
+            <a href="{% url 'pet_edit' pet.pk %}" class="pet-edit-btn">Edit</a>
+            <a href="{% url 'pet_delete' pet.pk %}" class="pet-delete-btn">Delete</a>
+        {% endif %}
+            <a href="{% url 'adoption_application_create' pet.pk  %}" class="pet-adopt-btn">Apply for Adoption</a>
+    </div>
+
+    <a href="{% url 'pet_list' %}" class="pet-back-link">Back to Pet List</a>
+</div>
+</div>
+
+{% endblock content %}

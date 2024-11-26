@@ -64,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processor.notification_count',
             ],
         },
     },
@@ -81,9 +82,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-LOGIN_REDIRECT_URL = 'home'  # Redirect to homepage after login
-LOGOUT_REDIRECT_URL = 'login'  # Redirect to homepage after logout
+LOGIN_REDIRECT_URL = 'home'  # Redirect to the homepage or any other page after login
+LOGOUT_REDIRECT_URL = 'login'  # Redirect to the login page after logout
+LOGIN_URL = 'login'  # URL where users will be redirected if they're not logged in
 
+# Media files (user-uploaded content)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -111,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
@@ -121,8 +124,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR/'static']
+
+# Static file directory for assets like the default profile image
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

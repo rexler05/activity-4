@@ -1,13 +1,17 @@
 {% extends 'app/base.html' %}
-
+{% load static %}
 {% block content %}
-<h2>Create a New Pet</h2>
+<div class="create-pet-container">
+    <h2 class="create-pet-title">Create a New Pet</h2>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Create Pet</button>
-</form>
+    <form method="POST" enctype="multipart/form-data" class="create-pet-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary create-pet-btn">Create Pet</button>
+    </form>
 
-<a href="{% url 'pet_list' %}">Back to Pet List</a>
-{% endblock %}
+    <a href="{% url 'pet_list' %}" class="back-to-pet-list">Back to Pet List</a>
+</div>
+{% endblock content %}

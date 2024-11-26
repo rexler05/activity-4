@@ -2,22 +2,26 @@
 {% load static %}
 {% block content %}
 
+<!-- Button to add new pet (only visible to staff) -->
 {% if user.is_staff %}
-    <a href="{% url 'pet_form' %}" class="btn btn-primary">Add New Pet</a>
+    <div class="add-item-btn-container">
+        <a href="{% url 'pet_form' %}" class="btn btn-primary">+ Add New Pet</a>
+    </div>
 {% endif %}
 
+<!-- Pet Listings -->
 <div class="box-container">
     {% for pet in pets %}
-        <div class="post-box">
-            <div class="post-entry">
+        <div class="item-box">
+            <div class="item-entry">
                 <h2><a href="{% url 'pet_detail' pet.pk %}">{{ pet.name }}</a></h2>
                 <div class="image-detail">
                     {% if pet.post_image %}
                         <a href="{% url 'pet_detail' pet.pk %}">
-                            <img src="{{ pet.post_image.url }}" alt="Post Image" > <!-- Adjusted image styling -->
+                            <img src="{{ pet.post_image.url }}" alt="Pet Image" class="item-image">
                         </a>
                     {% else %}
-                        <p>No image available</p> <!-- Optional message for posts without images -->
+                        <p>No image available</p>
                     {% endif %}
                 </div>
             </div>

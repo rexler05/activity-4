@@ -1,22 +1,27 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block content %}
-<div class="create-button">
-    <a href="{% url 'blog_create' %}">+New Post</a>
-</div>
 
+<!-- Button to add new blog post (only visible to staff) -->
+{% if user.is_staff %}
+    <div class="add-item-btn-container">
+        <a href="{% url 'blog_create' %}" class="btn btn-primary">+ New Post</a>
+    </div>
+{% endif %}
+
+<!-- Blog Listings -->
 <div class="box-container">
     {% for post in posts %}
-        <div class="post-box">
-            <div class="post-entry">
+        <div class="item-box">
+            <div class="item-entry">
                 <h2><a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a></h2>
                 <div class="image-detail">
                     {% if post.post_image %}
                         <a href="{% url 'blog_detail' post.pk %}">
-                            <img src="{{ post.post_image.url }}" alt="Post Image" > <!-- Adjusted image styling -->
+                            <img src="{{ post.post_image.url }}" alt="Post Image" class="item-image">
                         </a>
                     {% else %}
-                        <p>No image available</p> <!-- Optional message for posts without images -->
+                        <p>No image available</p>
                     {% endif %}
                 </div>
             </div>

@@ -1,67 +1,37 @@
 {% extends 'app/base.html' %}
+{% load static %}
 {% block content %}
-<style>
-  /* Styles for the dashboard table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 16px;
-    text-align: left;
-}
+    <div class="home-container">
+        <!-- Welcome Section -->
+        <section class="home-welcome">
+            <h1>Welcome to Our Website!</h1>
+            <p>Discover amazing content, connect with others, and enjoy an interactive experience!</p>
+            <a href="#features" class="home-btn">Explore Features</a>
+        </section>
 
-table thead {
-    background-color: #f4f4f4;
-}
+        <!-- Features Section -->
+        <section id="features" class="home-features">
+            <div class="feature">
+                <img src="{% static 'images/feature1.jpg' %}" alt="Feature 1">
+                <h2>Feature One</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+            </div>
+            <div class="feature">
+                <img src="{% static 'images/feature2.jpg' %}" alt="Feature 2">
+                <h2>Feature Two</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+            </div>
+            <div class="feature">
+                <img src="{% static 'images/feature3.jpg' %}" alt="Feature 3">
+                <h2>Feature Three</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+            </div>
+        </section>
 
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-}
-
-table tbody tr {
-    border-bottom: 1px solid #ddd;
-}
-
-table tbody tr:nth-of-type(even) {
-    background-color: #f9f9f9;
-}
-
-table tbody tr:last-of-type {
-    border-bottom: 2px solid #4CAF50;
-}
-
-table tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4CAF50;
-}
-
-</style>
-<table>
-    <thead>
-        <tr>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for profile in profiles %}
-        <tr>
-            <td>{{ profile.user.username }}</td>
-            <td>{{ profile.user.first_name }}</td>
-            <td>{{ profile.user.last_name }}</td>
-            <td>{{ profile.user.email }}</td>
-            <td>{{ profile.phone_number }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+        <!-- Call to Action Section -->
+        <section class="home-cta">
+            <h2>Ready to get started?</h2>
+            <a href="{% url 'register' %}" class="cta-btn">Join Now</a>
+        </section>
+    </div>
+{% endblock content %}

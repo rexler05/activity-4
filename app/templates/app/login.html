@@ -1,32 +1,23 @@
-<!DOCTYPE html>
+{% extends 'app/base.html' %}
 {% load static %}
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Escultura Website</title>
-
- <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
-</head>
-<body>
-<div class="Header"></div>
-
-<div class="login-container">
-    <div class="login-form">
-        <h2>Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="form-button">
-              <button type="submit" >Login</button>
-            </div>
-        </form>
-        <a href="{% url 'register' %}" >Register Here!</a>
+{% block content %}
+<div class="entry-container">
+ <form method="post" class="auth-form">
+    {% csrf_token %}
+    <h2>Login</h2>
+    <div class="form-group">
+        {{ form.username.label_tag }}
+        {{ form.username }}
     </div>
+    <div class="form-group">
+        {{ form.password.label_tag }}
+        {{ form.password }}
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+    <p class="text-center">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+</form>
 </div>
 
-
-</body>
-</html>
+{% endblock content %}

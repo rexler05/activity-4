@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block content %}
-<div class="post-boxs">
+<div class="post-container">
     <div class="post-actions">
         {% if user == post.author %}
-            <a href="{% url 'blog_update' post.pk %}">+ Edit Blog</a>
-            <a href="{% url 'blog_delete' post.pk %}">- Delete Blog</a>
+            <a href="{% url 'blog_update' post.pk %}" class="edit-btn">+ Edit Blog</a>
+            <a href="{% url 'blog_delete' post.pk %}" class="delete-btn">- Delete Blog</a>
         {% endif %}
     </div>
 
@@ -18,7 +18,7 @@
         {% if post.post_image %}
             <img class="image-details" src="{{ post.post_image.url }}" alt="Post Image">
         {% else %}
-            <p>No image available for this post.</p>
+            <p class="no-image">No image available for this post.</p>
         {% endif %}
     </div>
 
@@ -26,31 +26,25 @@
         <p>{{ post.body }}</p>
     </div>
 
-     <!-- Add a New Comment -->
     <div class="comment-form">
         <h4>Add a Comment</h4>
         <form method="post">
             {% csrf_token %}
             {{ comment_form.as_p }}
-            <button type="submit">Post Comment</button>
+            <button type="submit" class="submit-comment-btn">Post Comment</button>
         </form>
     </div>
 
-    <!-- Comments Section -->
     <div class="comments-section">
         <h3>Comments</h3>
         {% for comment in comments %}
             <div class="comment">
                 <p><strong>{{ comment.author.username }}</strong>: {{ comment.body }}</p>
-                <small>Posted on {{ comment.date_created }}</small>
+                <small class="comment-date">Posted on {{ comment.date_created }}</small>
             </div>
         {% empty %}
             <p>No comments yet.</p>
         {% endfor %}
     </div>
-
-
-
-
 </div>
 {% endblock content %}

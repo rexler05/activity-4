@@ -20,12 +20,13 @@ from .views import (HomePageView,
                     PetUpdateView,
                     PetDeleteView,
                     AdoptionApplicationCreateView,
-                    AdoptionApplicationListView,
+                    AdoptionApplicationsListView,
                     AdoptionApplicationDetailView,
-                    AdoptionApplicationApproveView,
-                    AdoptionApplicationDenyView,
-                    PetEventHistoryView,
-                    EventDetailView)
+                    ApproveAdoptionView,
+                    DenyAdoptionView,
+                    NotificationListView,
+                    MarkNotificationAsReadView
+                    )
 urlpatterns = [
     path('', LoginPageView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
@@ -52,16 +53,28 @@ urlpatterns = [
     path('pets/<int:pk>/', PetDetailView.as_view(), name='pet_detail'),
     path('pets/<int:pk>/edit/', PetUpdateView.as_view(), name='pet_edit'),
     path('pets/<int:pk>/delete/', PetDeleteView.as_view(), name='pet_delete'),
-    path('pets/<int:pk>/apply/', AdoptionApplicationCreateView.as_view(), name='adoption_application_form'),
+    path('pets/<int:pk>/apply/', AdoptionApplicationCreateView.as_view(), name='adoption_application_create'),
 
 
-    path('adoption/', AdoptionApplicationListView.as_view(), name='adoption'),
+
+    path('adoption/applications/', AdoptionApplicationsListView.as_view(), name='adoption_application'),
     path('adoption/<int:pk>', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
-    path('adoption/approve/<int:pk>/', AdoptionApplicationApproveView.as_view(), name='adoption_approval'),
-    path('adoption/deny/<int:pk>/', AdoptionApplicationDenyView.as_view(), name='adoption_application_deny'),
-    path('adoption/transactions/<int:pet_id>/', PetEventHistoryView.as_view(), name='adoption_transaction'),
-    path('adoption/events/<int:event_id>/', EventDetailView.as_view(), name='event_detail'),
+
+    # List and Detail Views
+    path('adoption/applications/', AdoptionApplicationsListView.as_view(), name='adoption_application'),
+    path('adoption/<int:pk>/', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
+
+    # Approve/Deny Actions
+    path('adoption/<int:pk>/approve/', ApproveAdoptionView.as_view(), name='adoption_approval'),
+    path('adoption/<int:pk>/deny/', DenyAdoptionView.as_view(), name='adoption_application_deny'),
+
+    path('notifications/', NotificationListView.as_view(), name='notification_list'),
+    path('notifications/<int:pk>/read/', MarkNotificationAsReadView.as_view(), name='mark_notification_as_read'),
+
 ]
 
+
+# Serve static files during development (only in DEBUG mode)
 if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

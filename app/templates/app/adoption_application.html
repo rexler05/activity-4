@@ -1,89 +1,38 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% block content %}
-<style>
-    /* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
 
-thead {
-    background-color: #f2f2f2;
-}
+<div class="application-list">
+         <h1>Adoption Applications</h1>
+    <div class="adoption-applications-table">
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-}
+        <table>
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Applicant</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td>{{ application.pet.name }}</td>
+                    <td>{{ application.user.username }}</td>
+                    <td>{{ application.status }}</td>
+                    <td>
+                        <a href="{% url 'adoption_application_detail' application.pk %}">View</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No applications found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Action and Transaction History link styling */
-a {
-    color: #4CAF50;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive styling */
-@media (max-width: 600px) {
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    th, td {
-        font-size: 14px;
-    }
-}
-</style>
-<h1>Adoption Applications</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Pet Name</th>
-            <th>Applicant</th>
-            <th>Reason for Adoption</th>
-            <th>Action</th>
-            <th>Transaction History</th>  <!-- Optional: Add a new column for transaction history -->
-        </tr>
-    </thead>
-    <tbody>
-        {% for application in applications %}
-        <tr>
-            <td>{{ application.pet.name }}</td>
-            <td>{{ application.user.username }}</td>
-            <td>{{ application.reason_for_adoption }}</td>
-            <td>
-                <a href="{% url 'adoption_application_detail' application.pk %}">View</a>
-            </td>
-            <td>
-                <a href="{% url 'adoption_transaction' application.pet.id %}">View Transaction History</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5">No applications found.</td>  <!-- Adjusted colspan to match the number of columns -->
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endblock %}
+{% endblock content %}

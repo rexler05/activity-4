@@ -1,17 +1,18 @@
-{% extends 'app/base.html'%}
+{% extends 'app/base.html' %}
 {% load static %}
-{% block content%}
+{% block content %}
 <div class="create-container">
-<div class="form-container">
-       <h1>Update Post</h1>
-    <form action="{% url 'blog_update' post.pk %}" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{form.as_p}}
-      <input type="submit" value="Update">
-    </form>
+    <div class="form-container">
+        <h1>Update Post</h1>
+        <form action="{% url 'blog_update' post.pk %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+            <div class="form-submit">
+                <input type="submit" value="Update" class="submit-btn">
+            </div>
+        </form>
+    </div>
 </div>
-
-</div>
-
-
-{% endblock content%}
+{% endblock content %}

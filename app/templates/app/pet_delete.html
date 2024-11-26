@@ -1,11 +1,13 @@
 {% extends 'app/base.html' %}
-
+{% load static %}
 {% block content %}
-<h2>Confirm Deletion</h2>
-<p>Are you sure you want to delete "{{ pet.name }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm</button>
-</form>
-<a href="{% url 'pet_list' %}">Cancel</a>
-{% endblock %}
+  <div class="deletion-confirmation-container">
+    <h2 class="confirmation-title">Confirm Deletion</h2>
+    <p class="confirmation-message">Are you sure you want to delete "{{ pet.name }}"?</p>
+    <form method="post" class="confirmation-form">
+      {% csrf_token %}
+      <button type="submit" class="confirmation-button">Confirm</button>
+    </form>
+    <a href="{% url 'profile' %}" class="cancel-link">Cancel</a>
+  </div>
+{% endblock content %}
