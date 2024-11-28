@@ -5,8 +5,8 @@
 <div class="post-container">
     <div class="post-actions">
         {% if user == post.author %}
-            <a href="{% url 'blog_update' post.pk %}" class="edit-btn">+ Edit Blog</a>
-            <a href="{% url 'blog_delete' post.pk %}" class="delete-btn">- Delete Blog</a>
+            <a href="{% url 'news_update' post.pk %}" class="edit-btn">+ Edit News</a>
+            <a href="{% url 'news_delete' post.pk %}" class="delete-btn">- Delete News</a>
         {% endif %}
     </div>
 

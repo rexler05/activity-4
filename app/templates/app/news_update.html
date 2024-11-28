@@ -3,14 +3,14 @@
 {% block content %}
 <div class="create-container">
     <div class="form-container">
-        <h1>New Post</h1>
-        <form action="{% url 'blog_create' %}" method="post" enctype="multipart/form-data">
+        <h1>Update Post</h1>
+        <form action="{% url 'news_update' post.pk %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-fields">
                 {{ form.as_p }}
             </div>
             <div class="form-submit">
-                <input type="submit" value="Save" class="submit-btn">
+                <input type="submit" value="Update" class="submit-btn">
             </div>
         </form>
     </div>

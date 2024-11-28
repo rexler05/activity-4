@@ -141,7 +141,7 @@ class ContactPageView(TemplateView):
 class BlogListView(ListView):
     model = Post
     context_object_name = 'posts'
-    template_name = 'app/blog_list.html'
+    template_name = 'app/news_list.html'
 
     def get_queryset(self):
         return Post.objects.all()
@@ -151,7 +151,7 @@ class BlogListView(ListView):
 class BlogDetailView(DetailView):
     model = Post
     context_object_name = 'post'
-    template_name = 'app/blog_detail.html'
+    template_name = 'app/news_detail.html'
 
     def get_queryset(self):
         return Post.objects.all()
@@ -183,7 +183,7 @@ class BlogDetailView(DetailView):
 class BlogCreateView(CreateView):
     model = Post
     fields = ['title', 'body', 'post_image', 'post_categories']
-    template_name = 'app/blog_create.html'
+    template_name = 'app/news_create.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -194,10 +194,10 @@ class BlogCreateView(CreateView):
 class BlogUpdateView(UpdateView):
     model = Post
     fields = ['title', 'body', 'post_image', 'post_categories']
-    template_name = 'app/blog_update.html'
+    template_name = 'app/news_update.html'
 
     def get_success_url(self):
-        return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('news_detail', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -207,8 +207,8 @@ class BlogUpdateView(UpdateView):
 @method_decorator(login_required, name='dispatch')
 class BlogDeleteView(DeleteView):
     model = Post
-    template_name = 'app/blog_delete.html'
-    success_url = reverse_lazy('blog')
+    template_name = 'app/news_delete.html'
+    success_url = reverse_lazy('news')
 
 
 

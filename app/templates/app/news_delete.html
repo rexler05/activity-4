@@ -4,12 +4,12 @@
 <div class="delete-container">
     <div class="form-container">
         <h1>Delete Post</h1>
-        <form action="{% url 'blog_delete' post.pk %}" method="post">
+        <form action="{% url 'news_delete' post.pk %}" method="post">
             {% csrf_token %}
             <p>Are you sure you want to delete the post titled "<strong>{{ post.title }}</strong>"?</p>
             <div class="confirmation-buttons">
                 <input type="submit" value="Confirm" class="confirm-btn">
-                <a href="{% url 'blog' %}" class="cancel-btn">Cancel</a>
+                <a href="{% url 'news' %}" class="cancel-btn">Cancel</a>
             </div>
         </form>
     </div>
