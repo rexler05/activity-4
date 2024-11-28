@@ -5,7 +5,7 @@
 <!-- Button to add new pet (only visible to staff) -->
 {% if user.is_staff %}
     <div class="add-item-btn-container">
-        <a href="{% url 'pet_form' %}" class="btn btn-primary">+ Add New Pet</a>
+        <a href="{% url 'pet_create' %}" class="btn btn-primary">+ Add New Pet</a>
     </div>
 {% endif %}
 

@@ -218,7 +218,7 @@ class BlogDeleteView(DeleteView):
 class PetCreateView(CreateView):
     model = Pet
     fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image']
-    template_name = 'app/pet_form.html'
+    template_name = 'app/pet_create.html'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -229,7 +229,7 @@ class PetCreateView(CreateView):
 class PetUpdateView(UpdateView):
     model = Pet
     fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image']
-    template_name = 'app/pet_edit.html'
+    template_name = 'app/pet_update.html'
 
     def get_success_url(self):
         return reverse_lazy('pet_detail', kwargs={'pk': self.object.pk})
@@ -266,7 +266,7 @@ class PetDetailView(DetailView):
 class PetDeleteView(DeleteView):
     model = Pet
     template_name = 'app/pet_delete.html'
-    success_url = reverse_lazy('pet_list')
+    success_url = reverse_lazy('pets')
 
     def test_func(self):
         pet = self.get_object()

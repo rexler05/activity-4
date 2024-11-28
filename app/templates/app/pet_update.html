@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="update-pet-form-container">
+        <h2 class="update-pet-title">Update Pet: {{ pet.name }}</h2>
+        <form action="{% url 'pet_update' pet.pk %}"  enctype="multipart/form-data" method="post" class="update-pet-form" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Confirm" class="btn btn-primary">
+        </form>
+            <div class="back-to-detail-link">
+                <a href="{% url 'pet_detail' pet.pk %}" class="btn btn-secondary">Back to Pet Detail</a>
+            </div>
+    </div>
+{% endblock content %}
