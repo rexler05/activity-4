@@ -4,7 +4,7 @@
 <div class="delete-container">
     <div class="form-container">
         <h1>Delete Post</h1>
-        <form action="{% url 'blog_delete' object.pk %}" method="post">
+        <form action="{% url 'blog_delete' post.pk %}" method="post">
             {% csrf_token %}
             <p>Are you sure you want to delete the post titled "<strong>{{ post.title }}</strong>"?</p>
             <div class="confirmation-buttons">
