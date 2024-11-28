@@ -3,7 +3,6 @@
 
 {% block content %}
 <div class="user-gallery">
-    <!-- User Header -->
     <div class="user-header">
         <div class="user-info">
             <img class="user-avatar"
@@ -14,13 +13,12 @@
         </div>
     </div>
 
-    <!-- Gallery Grid -->
     <div class="gallery-grid">
         {% for post in posts %}
         <div class="gallery-item">
             <div class="gallery-image">
                 {% if post.post_image %}
-                <a href="{% url 'blog_detail' post.pk %}">
+                <a href="{% url 'news_detail' post.pk %}">
                     <img src="{{ post.post_image.url }}" alt="Post Image">
                 </a>
                 {% else %}
@@ -29,7 +27,7 @@
             </div>
             <div class="gallery-content">
                 <h3 class="post-title">
-                    <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                    <a href="{% url 'news_detail' post.pk %}">{{ post.title }}</a>
                 </h3>
                 <p class="post-excerpt">{{ post.body|truncatewords:20 }}</p>
             </div>
