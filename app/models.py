@@ -42,7 +42,7 @@ class Profile(models.Model):
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=1)
     phone_number = models.CharField(max_length=15)
-    image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='default_profile.jpg')
+    image = models.ImageField(upload_to='profile_images/', blank=True, null=True, default='profile_images/default_profile.jpg')
 
     def __str__(self):
         return self.user.username
