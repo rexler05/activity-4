@@ -5,9 +5,11 @@
 {% block content %}
 <div class="container">
     <h1 class="mb-4">Notifications</h1>
-    {% if authenticated.is_staff %}
+
+    {% if request.user.is_authenticated and request.user.is_staff %}
     <a href="{% url 'notification_create' %}" class="btn btn-primary mb-3">Create Notification</a>
     {% endif %}
+
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -16,7 +18,7 @@
                 <th>Message</th>
                 <th>Status</th>
                 <th>View</th>
-                {% if authenticated.is_staff %}
+                {% if request.user.is_staff %}
                 <th>Edit</th>
                 <th>Delete</th>
                 {% endif %}
@@ -32,7 +34,7 @@
                 <td>
                     <a href="{% url 'notification_detail' notification.id %}" class="btn btn-info btn-sm">View</a>
                 </td>
-                {% if authenticated.is_staff %}
+                {% if request.user.is_staff %}
                 <td>
                     <a href="{% url 'notification_update' notification.id %}" class="btn btn-warning btn-sm">Edit</a>
                 </td>

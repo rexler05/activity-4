@@ -2,9 +2,9 @@
 
 {% block content %}
 <h1>Pet List</h1>
-{% if authenticated.is_staff %}
-<a href="{% url 'pet_create' %}" class="btn btn-primary mb-3">Add New Pet</a>
-{% endif %}
+    {% if request.user.is_staff %}
+        <a href="{% url 'pet_create' %}" class="btn btn-primary mb-3">Add New Pet</a>
+    {% endif %}
 <ul class="list-group">
     {% for pet in pets %}
     <li class="list-group-item">
