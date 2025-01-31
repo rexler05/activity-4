@@ -49,6 +49,9 @@ class AdoptionApplicationListView(LoginRequiredMixin, ListView):
     template_name = 'applicant/adoption_application_list.html'
     context_object_name = 'applications'
 
+    def get_queryset(self):
+        return AdoptionApplication.objects.filter(pet__owner__isnull=True)
+
 class AdoptionApplicationDetailView(LoginRequiredMixin, DetailView):
     model = AdoptionApplication
     template_name = 'applicant/adoption_application_detail.html'
@@ -80,14 +83,24 @@ class AdoptionApplicationDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'applicant/adoption_application_delete.html'
     success_url = reverse_lazy('adoption_application_list')
 
+
 class AdoptionApplicationApproveView(LoginRequiredMixin, UserPassesTestMixin, View):
     def test_func(self):
         return self.request.user.is_staff  # Only staff can approve applications
 
     def post(self, request, pk, *args, **kwargs):
         application = get_object_or_404(AdoptionApplication, pk=pk)
-        application.status = "Approved"
+        pet = application.pet
+
+        # Update the pet's owner and set it as adopted
+        pet.owner = application.user
+        pet.is_adopted = True
+        pet.save()
+
+        # Update application status
+        application.status = "APPROVED"
         application.save()
+
         return redirect('adoption_application_list')
 
 # Post Views
