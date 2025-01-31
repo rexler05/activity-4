@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from .models import Pet, AdoptionApplication, Post, Comment, Notification
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import get_user_model
 
 # Home Views
 class HomePageView(TemplateView):
@@ -20,6 +21,10 @@ class PetListView(LoginRequiredMixin, ListView):
     model = Pet
     template_name = 'pet/pet_list.html'
     context_object_name = 'pets'
+
+    def get_queryset(self):
+        # Filter out pets that already have an owner
+        return Pet.objects.filter(owner__isnull=True)
 
 class PetDetailView(DetailView):
     model = Pet
@@ -57,14 +62,36 @@ class AdoptionApplicationDetailView(LoginRequiredMixin, DetailView):
     template_name = 'applicant/adoption_application_detail.html'
     context_object_name = 'application'
 
+
 class AdoptionApplicationCreateView(LoginRequiredMixin, CreateView):
     model = AdoptionApplication
     fields = ['pet', 'reason_for_adoption', 'additional_details']
     template_name = 'applicant/adoption_application_create.html'
     success_url = reverse_lazy('adoption_application_list')
 
+    def get_form(self):
+        form = super().get_form()
+        # Filter out pets that are already adopted
+        form.fields['pet'].queryset = Pet.objects.filter(is_adopted=False)
+        return form
+
     def form_valid(self, form):
+        # Save the adoption application and associate it with the current user
         form.instance.user = self.request.user
+        application = form.save()
+
+        # Create a notification for all admins
+        admin_users = get_user_model().objects.filter(is_staff=True)
+
+        for admin in admin_users:
+            Notification.objects.create(
+                user=admin,  # Notify the admin user
+                application=application,  # Link the notification to the application
+                message=f"A new adoption application has been submitted for the pet '{application.pet.name}'. Please review it."
+                # Custom message
+            )
+
+        # Redirect after saving
         return super().form_valid(form)
 
 class AdoptionApplicationUpdateView(LoginRequiredMixin, UpdateView):

@@ -24,9 +24,13 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'pet_list' %}">Pets</a>
                     </li>
+                     {% if request.user.is_staff %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'adoption_application_list' %}">Applications</a>
                     </li>
+                      {% endif %}
+
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'post_list' %}">News</a>
                     </li>

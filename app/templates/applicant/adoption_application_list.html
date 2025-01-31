@@ -5,7 +5,9 @@
 {% block content %}
 <div class="container">
     <h1 class="mb-4">Adoption Applications</h1>
-    <a href="{% url 'adoption_application_create' %}" class="btn btn-primary mb-3">Create New Application</a>
+    {% if not request.user.is_staff %}
+        <a href="{% url 'adoption_application_create' %}" class="btn btn-primary mb-3">Create New Application</a>
+    {% endif %}
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
