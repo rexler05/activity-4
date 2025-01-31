@@ -70,6 +70,11 @@ class AdoptionApplicationUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'applicant/adoption_application_update.html'
     success_url = reverse_lazy('adoption_application_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['application'] = self.get_object()  # Ensure `application` is passed
+        return context
+
 class AdoptionApplicationDeleteView(LoginRequiredMixin, DeleteView):
     model = AdoptionApplication
     template_name = 'applicant/adoption_application_delete.html'

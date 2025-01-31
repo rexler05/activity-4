@@ -16,7 +16,6 @@
                 <th>View</th>
                 {% if request.user.is_staff %}
                     <th>Approve</th>
-                    <th>Edit</th>
                     <th>Delete</th>
                 {% endif %}
             </tr>
@@ -41,9 +40,6 @@
                         {% else %}
                             <span class="text-success">Approved</span>
                         {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'adoption_application_update' application.pk %}" class="btn btn-warning btn-sm">Edit</a>
                     </td>
                     <td>
                         <a href="{% url 'adoption_application_delete' application.pk %}" class="btn btn-danger btn-sm">Delete</a>
