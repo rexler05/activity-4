@@ -18,19 +18,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'pet_list' %}">Pets</a>
                     </li>
-                     {% if request.user.is_staff %}
+                    {% if request.user.is_staff %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'adoption_application_list' %}">Applications</a>
                     </li>
-                      {% endif %}
-
-
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'post_list' %}">News</a>
                     </li>
@@ -38,13 +36,13 @@
                         <a class="nav-link" href="{% url 'about' %}">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'contact' %}">Home</a>
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{% url 'notification_list' %}">
                             <i class="fas fa-bell"></i>
                             {% if unread_notifications_count > 0 %}
-                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                            <span class="badge badge-danger position-absolute top-0 start-100 translate-middle">
                                 {{ unread_notifications_count }}
                             </span>
                             {% endif %}
@@ -67,7 +65,7 @@
                                 <li><a class="dropdown-item" href="{% url 'adoption_application_list' %}"><i class="fas fa-paw"></i> My Applications</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <form method="post" action="{% url 'logout' %}">
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
                                         {% csrf_token %}
                                         <button type="submit" class="dropdown-item text-danger">
                                             <i class="fas fa-sign-out-alt"></i> Logout

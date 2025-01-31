@@ -11,8 +11,7 @@ a {
 }
 
 a:hover {
-    text-decoration: none
-
+    text-decoration: none;
 }
 
 .nav-link {
@@ -37,316 +36,49 @@ a:hover {
     border-radius: 50%;
 }
 
-
-
-
-#news_posts_gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
-}
-
 .card {
-  border-radius: 10px;
-  overflow: hidden;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .card-img-top {
-  object-fit: cover;
-  height: 200px;
-  width: 100%;
+    object-fit: cover;
+    height: 200px;
+    width: 100%;
 }
 
 .card-body {
-  padding: 1rem;
+    padding: 1rem;
 }
 
 .card-title {
-  font-size: 1.2rem;
-  font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .card-text {
-  font-size: 0.9rem;
-}
-
-#view_post_btn_{{ post.pk }} {
-  margin-top: 10px;
-}
-
-#no_posts_message {
-  text-align: center;
-  font-size: 1.2rem;
-  color: gray;
-}
-
-#post_link_{{ post.pk }} {
-  text-decoration: none;
-  color: #007bff;
-}
-
-#post_link_{{ post.pk }}:hover {
-  text-decoration: underline;
-}
-
-
-
-#post_detail_container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#post_title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-#post_info {
-  font-size: 1rem;
-  margin-bottom: 15px;
-}
-
-#post_image_section {
-  margin-bottom: 20px;
-}
-
-.post_image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-}
-
-#no_image_message {
-  font-style: italic;
-  color: #777;
-}
-
-#post_body {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-#post_categories {
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-#post_actions a {
-  margin-right: 10px;
-}
-
-#edit_post_btn, #delete_post_btn {
-  padding: 10px 15px;
-  text-decoration: none;
-  color: white;
-  border-radius: 5px;
-}
-
-#edit_post_btn {
-  background-color: #f0ad4e;
-}
-
-#delete_post_btn {
-  background-color: #d9534f;
-}
-
-#edit_post_btn:hover, #delete_post_btn:hover {
-  opacity: 0.8;
-}
-
-
-
-#create_post_container {
-  padding: 30px;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#create_post_title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-}
-
-input[type="text"], textarea, input[type="file"] {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-textarea {
-  resize: vertical;
-  height: 150px;
-}
-
-input[type="file"] {
-  padding: 5px;
+    font-size: 0.9rem;
 }
 
 button[type="submit"] {
-  padding: 12px 20px;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  transition: background-color 0.3s;
+    padding: 12px 20px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-input[type="text"]::placeholder, textarea::placeholder {
-  color: #aaa;
-}
-
-#title_group, #body_group, #post_image_group, #categories_group {
-  margin-bottom: 25px;
-}
-
-#image_label {
-  font-weight: normal;
-}
-
-#post_image {
-  padding: 5px;
-}
-
-
-
-/* Form Container */
-.form-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
-
-/* Form Heading */
-.form-heading {
-    text-align: center;
-    font-size: 32px;
-    color: #333;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-/* Form Structure */
-.form-register {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Uniform spacing between form fields */
-}
-
-/* Form Group */
-.form-group {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.form-group .form-input {
-    width: 100%;
-    padding: 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-.form-group .form-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
-}
-
-.form-group i {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #007bff;
-}
-
-/* Error Message */
-.text-danger {
-    font-size: 14px;
-    color: red;
-    margin-top: 5px;
-}
-
-/* Submit Button */
-.btn-submit {
-    background-color: #007bff;
-    color: white;
-    padding: 14px;
-    font-size: 18px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-}
-
-.btn-submit:hover {
     background-color: #0056b3;
 }
 
-/* Login Link */
-.text-center {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.text-center a {
-    color: #007bff;
-    font-weight: 600;
-}
-
-.text-center a:hover {
-    text-decoration: underline;
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Responsive Design */
@@ -354,27 +86,5 @@ input[type="text"]::placeholder, textarea::placeholder {
     .form-container {
         width: 90%;
         padding: 20px;
-    }
-
-    .form-heading {
-        font-size: 26px;
-    }
-
-    .form-register {
-        gap: 15px; /* Less spacing on small screens */
-    }
-
-    .form-group label {
-        font-size: 14px;
-    }
-
-    .form-group .form-input {
-        font-size: 14px;
-        padding: 12px;
-    }
-
-    .btn-submit {
-        font-size: 16px;
-        padding: 12px;
     }
 }
