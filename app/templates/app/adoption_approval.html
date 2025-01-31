@@ -1,7 +1,0 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-<h1>Application Approved!</h1>
-<p>The application for {{ application.pet.name }} has been successfully approved.</p>
-<a href="{% url 'adoption_application' %}">Back to Applications</a>
-{% endblock %}

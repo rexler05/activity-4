@@ -1,0 +1,16 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Notification Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Notification Details</h1>
+    <p><strong>User:</strong> {{ notification.user.username }}</p>
+    <p><strong>Application:</strong> {{ notification.application }}</p>
+    <p><strong>Message:</strong> {{ notification.message }}</p>
+    <p><strong>Status:</strong> {% if notification.is_read %}Read{% else %}Unread{% endif %}</p>
+    <p><strong>Created At:</strong> {{ notification.created_at }}</p>
+    <a href="{% url 'notification_update' notification.id %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'notification_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+{% endblock content %}

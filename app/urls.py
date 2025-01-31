@@ -1,76 +1,54 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import (HomePageView,
-                    AboutPageView,
-                    ContactPageView,
-                    BlogListView,
-                    BlogDetailView,
-                    BlogCreateView,
-                    BlogUpdateView,
-                    BlogDeleteView,
-                    RegisterView,
-                    LoginPageView,
-                    LogoutPageView,
-                    ProfileView,
-                    ProfileUpdateView,
-                    PetCreateView,
-                    PetListView,
-                    PetDetailView,
-                    PetUpdateView,
-                    PetDeleteView,
-                    AdoptionApplicationCreateView,
-                    AdoptionApplicationsListView,
-                    AdoptionApplicationDetailView,
-                    ApproveAdoptionView,
-                    DenyAdoptionView,
-                    NotificationListView,
-                    MarkNotificationAsReadView
-                    )
+from .views import (
+    PetListView, PetDetailView, PetCreateView, PetUpdateView, PetDeleteView,
+    AdoptionApplicationListView, AdoptionApplicationDetailView, AdoptionApplicationCreateView,
+    AdoptionApplicationUpdateView, AdoptionApplicationDeleteView,
+    PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView,
+    CommentListView, CommentDetailView, CommentCreateView, CommentUpdateView, CommentDeleteView,
+    NotificationListView, NotificationDetailView, NotificationCreateView, NotificationUpdateView,
+    NotificationDeleteView, HomePageView, AboutPageView, ContactPageView
+)
+
 urlpatterns = [
-    path('', LoginPageView.as_view(), name='login'),
-    path('register/', RegisterView.as_view(), name='register'),
-    path('logout/', LogoutPageView.as_view(), name='logout'),
-    path('profile/', ProfileView.as_view(), name='profile'),
-    path('account_settings/edit/', ProfileUpdateView.as_view(), name='edit_profile'),
-    path('home/', HomePageView.as_view(), name='home'),
-    path('about/', AboutPageView.as_view(), name='about'),
+
+    path('', HomePageView.as_view(), name='home'),
+    path('about', AboutPageView.as_view(), name='about'),
     path('contact/', ContactPageView.as_view(), name='contact'),
     # Pet URLs
-
-
-
-    path('news/', BlogListView.as_view(), name='news'),
-    path('news/<int:pk>', BlogDetailView.as_view(), name='news_detail'),
-    path('news/create', BlogCreateView.as_view(), name='news_create'),
-    path('news/<int:pk>/edit', BlogUpdateView.as_view(), name='news_update'),
-    path('news/<int:pk>/delete', BlogDeleteView.as_view(), name='news_delete'),
-
-
-
-    path('pets/', PetListView.as_view(), name='pets'),
-    path('pets/create/', PetCreateView.as_view(), name='pet_create'),
+    path('pets/', PetListView.as_view(), name='pet_list'),
     path('pets/<int:pk>/', PetDetailView.as_view(), name='pet_detail'),
-    path('pets/<int:pk>/edit/', PetUpdateView.as_view(), name='pet_update'),
+    path('pets/create/', PetCreateView.as_view(), name='pet_create'),
+    path('pets/<int:pk>/update/', PetUpdateView.as_view(), name='pet_update'),
     path('pets/<int:pk>/delete/', PetDeleteView.as_view(), name='pet_delete'),
-    path('pets/<int:pk>/apply/', AdoptionApplicationCreateView.as_view(), name='adoption_application_create'),
 
+    # AdoptionApplication URLs
+    path('adoptions/', AdoptionApplicationListView.as_view(), name='adoption_application_list'),
+    path('adoptions/<int:pk>/', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
+    path('adoptions/create/', AdoptionApplicationCreateView.as_view(), name='adoption_application_create'),
+    path('adoptions/<int:pk>/update/', AdoptionApplicationUpdateView.as_view(), name='adoption_application_update'),
+    path('adoptions/<int:pk>/delete/', AdoptionApplicationDeleteView.as_view(), name='adoption_application_delete'),
 
+    # Post URLs
+    path('posts/', PostListView.as_view(), name='post_list'),
+    path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+    path('posts/create/', PostCreateView.as_view(), name='post_create'),
+    path('posts/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
+    path('posts/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
 
-    path('adoption/applications/', AdoptionApplicationsListView.as_view(), name='adoption_application'),
-    path('adoption/<int:pk>', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
+    # Comment URLs
+    path('comments/', CommentListView.as_view(), name='comment_list'),
+    path('comments/<int:pk>/', CommentDetailView.as_view(), name='comment_detail'),
+    path('comments/create/', CommentCreateView.as_view(), name='comment_create'),
+    path('comments/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update'),
+    path('comments/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
 
-    # List and Detail Views
-    path('adoption/applications/', AdoptionApplicationsListView.as_view(), name='adoption_application'),
-    path('adoption/<int:pk>/', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
-
-    # Approve/Deny Actions
-    path('adoption/<int:pk>/approve/', ApproveAdoptionView.as_view(), name='adoption_approval'),
-    path('adoption/<int:pk>/deny/', DenyAdoptionView.as_view(), name='adoption_application_deny'),
-
+    # Notification URLs
     path('notifications/', NotificationListView.as_view(), name='notification_list'),
-    path('notifications/<int:pk>/read/', MarkNotificationAsReadView.as_view(), name='mark_notification_as_read'),
-
+    path('notifications/<int:pk>/', NotificationDetailView.as_view(), name='notification_detail'),
+    path('notifications/create/', NotificationCreateView.as_view(), name='notification_create'),
+    path('notifications/<int:pk>/update/', NotificationUpdateView.as_view(), name='notification_update'),
+    path('notifications/<int:pk>/delete/', NotificationDeleteView.as_view(), name='notification_delete'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

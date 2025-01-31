@@ -1,0 +1,34 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Create Adoption Application{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Create Adoption Application</h1>
+    <form action="{% url 'adoption_application_create' %}" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_pet">Pet</label>
+            <select id="id_pet" name="pet" class="form-control" required>
+                {% for pet in form.pet.field.queryset %}
+                    <option value="{{ pet.pk }}">{{ pet.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_reason_for_adoption">Reason for Adoption</label>
+            <textarea id="id_reason_for_adoption" name="reason_for_adoption" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_additional_details">Additional Details</label>
+            <textarea id="id_additional_details" name="additional_details" class="form-control" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Submit</button>
+        <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

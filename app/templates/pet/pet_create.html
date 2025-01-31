@@ -1,0 +1,41 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h1>Add New Pet</h1>
+<form action="{% url 'pet_create' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="id_name">Name</label>
+        <input type="text" id="id_name" name="name" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_animal">Animal Type</label>
+        <input type="text" id="id_animal" name="animal" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_breed">Breed</label>
+        <input type="text" id="id_breed" name="breed" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_age">Age</label>
+        <input type="number" id="id_age" name="age" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="id_description">Description</label>
+        <textarea id="id_description" name="description" class="form-control" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="id_post_image">Upload Image</label>
+        <input type="file" id="id_post_image" name="post_image" class="form-control-file">
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'pet_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock content %}

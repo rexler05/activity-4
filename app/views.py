@@ -1,383 +1,178 @@
-from profile import Profile
-from django.shortcuts import render, redirect , get_object_or_404
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LogoutView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegistrationForm, ProfileUpdateForm
+from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView , View
-from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
-from .models import Post, Profile, Pet, AdoptionApplication ,Notification
-from django.contrib import messages
-from .forms import CommentForm
+from .models import Pet, AdoptionApplication, Post, Comment, Notification
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
-
-
-class RegisterView(FormView):
-    template_name = 'app/register.html'
-    form_class = RegistrationForm
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        user = form.save()
-        Profile.objects.get_or_create(
-            user=user,
-            age=form.cleaned_data['age'],
-            gender=form.cleaned_data['gender'],
-            phone_number=form.cleaned_data['phone_number']
-        )
-        login(self.request, user)
-        messages.success(self.request, "Registration successful! You are now logged in.")
-        return redirect('home')
-
-
-class LoginPageView(FormView):
-    template_name = 'app/login.html'
-    form_class = AuthenticationForm
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(self.request, user)
-            return super().form_valid(form)
-        else:
-            form.add_error(None, "Invalid username or password")
-            return self.form_invalid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form()
-        return context
-
-
-@method_decorator(login_required, name='dispatch')
-class ProfileView(DetailView):
-    model = Profile
-    template_name = 'app/profile.html'
-
-    def get_object(self, queryset=None):
-        return Profile.objects.get(user=self.request.user)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(author=self.request.user)  # User posts
-        return context
-
-
-
-@method_decorator(login_required, name='dispatch')
-class ProfileUpdateView(UpdateView):
-    model = Profile
-    form_class = ProfileUpdateForm
-    template_name = 'app/edit_profile.html'
-
-    def get_object(self, queryset=None):
-        return Profile.objects.get(user=self.request.user)
-
-    def get_initial(self):
-        initial = super().get_initial()
-        user = self.request.user
-        initial['username'] = user.username
-        initial['first_name'] = user.first_name
-        initial['last_name'] = user.last_name
-        initial['email'] = user.email
-        return initial
-
-    def get_success_url(self):
-        return reverse_lazy('profile')
-
-    def form_valid(self, form):
-        user = self.request.user
-        user.username = form.cleaned_data['username']
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
-        user.email = form.cleaned_data['email']
-        user.save()
-
-        profile = form.save(commit=False)
-        profile.user = user
-
-        image = form.cleaned_data.get('image')
-        if image:
-            profile.image = image
-        else:
-            profile.image = None
-
-        profile.save()
-        return super().form_valid(form)
-
-
-# Logout View
-class LogoutPageView(LogoutView):
-    next_page = reverse_lazy('login')
-
-
-
-
-class HomePageView(ListView):
-    model = Profile
-    context_object_name = 'profiles'
+class HomePageView(TemplateView):
     template_name = 'app/home.html'
-
-    def get_queryset(self):
-        return Profile.objects.all()
-
 
 class AboutPageView(TemplateView):
     template_name = 'app/about.html'
 
-
 class ContactPageView(TemplateView):
     template_name = 'app/contact.html'
 
-
-class BlogListView(ListView):
-    model = Post
-    context_object_name = 'posts'
-    template_name = 'app/news_list.html'
-
-    def get_queryset(self):
-        return Post.objects.all()
-
-
-@method_decorator(login_required, name='dispatch')
-class BlogDetailView(DetailView):
-    model = Post
-    context_object_name = 'post'
-    template_name = 'app/news_detail.html'
-
-    def get_queryset(self):
-        return Post.objects.all()
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['comments'] = self.object.comment_set.all()
-        context['comment_form'] = CommentForm()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        comment_form = CommentForm(request.POST)
-
-        if comment_form.is_valid():
-            comment = comment_form.save(commit=False)
-            comment.post = self.object
-            comment.author = request.user
-            comment.save()
-            return redirect(self.object.get_absolute_url())
-
-        context = self.get_context_data()
-        context['comment_form'] = comment_form
-        return self.render_to_response(context)
-
-
-
-@method_decorator(login_required, name='dispatch')
-class BlogCreateView(CreateView):
-    model = Post
-    fields = ['title', 'body', 'post_image', 'post_categories']
-    template_name = 'app/news_create.html'
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-
-@method_decorator(login_required, name='dispatch')
-class BlogUpdateView(UpdateView):
-    model = Post
-    fields = ['title', 'body', 'post_image', 'post_categories']
-    template_name = 'app/news_update.html'
-
-    def get_success_url(self):
-        return reverse_lazy('news_detail', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-
-@method_decorator(login_required, name='dispatch')
-class BlogDeleteView(DeleteView):
-    model = Post
-    template_name = 'app/news_delete.html'
-    success_url = reverse_lazy('news')
-
-
-
-
-
-@method_decorator(login_required, name='dispatch')
-class PetCreateView(CreateView):
+# Pet Views
+class PetListView(LoginRequiredMixin, ListView):
     model = Pet
-    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image']
-    template_name = 'app/pet_create.html'
-
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super().form_valid(form)
-
-
-@method_decorator(login_required, name='dispatch')
-class PetUpdateView(UpdateView):
-    model = Pet
-    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image']
-    template_name = 'app/pet_update.html'
-
-    def get_success_url(self):
-        return reverse_lazy('pet_detail', kwargs={'pk': self.object.pk})
-
-    def form_valid(self, form):
-        return super().form_valid(form)
-
-
-class PetListView(ListView):
-    model = Pet
+    template_name = 'pet/pet_list.html'
     context_object_name = 'pets'
-    template_name = 'app/pet_list.html'
 
-    def get_queryset(self):
-        return Pet.objects.filter(is_adopted=False)
-
-@method_decorator(login_required, name='dispatch')
 class PetDetailView(DetailView):
     model = Pet
-    template_name = 'app/pet_detail.html'
+    template_name = 'pet/pet_detail.html'
     context_object_name = 'pet'
 
-    def get_queryset(self):
-        return Pet.objects.filter(is_adopted=False)
+class PetCreateView(CreateView):
+    model = Pet
+    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'is_adopted']
+    template_name = 'pet/pet_create.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        pet = self.get_object()
-        context['applications'] = pet.adoptionapplication_set.all()  # Changed here
-        return context
+class PetUpdateView(UpdateView):
+    model = Pet
+    fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'is_adopted']
+    template_name = 'pet/pet_update.html'
 
-
-@method_decorator(login_required, name='dispatch')
 class PetDeleteView(DeleteView):
     model = Pet
-    template_name = 'app/pet_delete.html'
-    success_url = reverse_lazy('pets')
+    template_name = 'pet/pet_delete.html'
+    success_url = reverse_lazy('pet_list')
 
-    def test_func(self):
-        pet = self.get_object()
-        return self.request.user.is_staff or pet.owner == self.request.user
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(Pet, pk=self.kwargs['pk'])
-
-
-@method_decorator(login_required, name='dispatch')
-class AdoptionApplicationCreateView(CreateView):
+# AdoptionApplication Views
+class AdoptionApplicationListView(LoginRequiredMixin, ListView):
     model = AdoptionApplication
-    fields = ['reason_for_adoption', 'additional_details']
-    template_name = 'app/adoption_application_create.html'
-
-    def form_valid(self, form):
-        pet = Pet.objects.get(pk=self.kwargs['pk'])
-        form.instance.pet = pet
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        pet = Pet.objects.get(pk=self.kwargs['pk'])
-        context['pet'] = pet  # Make sure pet is in the context
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('pet_detail', kwargs={'pk': self.kwargs['pk']})
-
-
-@method_decorator(login_required, name='dispatch')
-class AdoptionApplicationDetailView(DetailView):
-    model = AdoptionApplication
-    template_name = 'app/adoption_application_detail.html'
-    context_object_name = 'application'
-
-
-
-@method_decorator(login_required, name='dispatch')
-class AdoptionApplicationsListView(ListView):
-    model = AdoptionApplication
-    template_name = 'app/adoption_application.html'
+    template_name = 'applicant/adoption_application_list.html'
     context_object_name = 'applications'
 
 
-@method_decorator(login_required, name='dispatch')
-class ApproveAdoptionView(View):
-    def post(self, request, pk):
-        application = get_object_or_404(AdoptionApplication, pk=pk)
+class AdoptionApplicationDetailView(DetailView):
+    model = AdoptionApplication
+    template_name = 'applicant/adoption_application_detail.html'
+    context_object_name = 'application'
 
-        # Set the application status to approved
-        application.status = 'APPROVED'
-        application.save()
+class AdoptionApplicationCreateView(CreateView):
+    model = AdoptionApplication
+    fields = ['pet', 'reason_for_adoption', 'additional_details']
+    template_name = 'applicant/adoption_application_create.html'
 
-        # Update the pet's adoption status and owner
-        pet = application.pet
-        pet.is_adopted = True
-        pet.owner = application.user  # Assign the approved adopter as the new owner
-        pet.save()
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-        # Notify the user
-        Notification.objects.create(
-            user=application.user,
-            application=application,
-            message=f"Your adoption application for {application.pet.name} has been approved!, "
-                    f"You can now go to our Pet Adoption Center for further process of adoption ,"
-        )
-
-        return redirect('adoption_application_detail', pk=pk)
-
-
-@method_decorator(login_required, name='dispatch')
-class DenyAdoptionView(View):
-    def post(self, request, pk):
-        application = get_object_or_404(AdoptionApplication, pk=pk)
-        application.status = 'DENIED'
-        application.save()
-
-        pet = application.pet
-        pet.is_adopted = False
-        pet.owner = None
-        pet.save()
-
-        Notification.objects.create(
-            user=application.user,
-            application=application,
-            message=f"Your adoption application for {application.pet.name} has been denied!"
-        )
-
-        return redirect('adoption_application_detail', pk=pk)
+    def get_success_url(self):
+        return reverse_lazy('adoption_application_list')
 
 
 
-@method_decorator(login_required, name='dispatch')
-class NotificationListView(ListView):
+
+
+class AdoptionApplicationUpdateView(UpdateView):
+    model = AdoptionApplication
+    fields = ['pet', 'user', 'reason_for_adoption', 'additional_details', 'status']
+    template_name = 'applicant/adoption_application_update.html'
+
+
+
+class AdoptionApplicationDeleteView(DeleteView):
+    model = AdoptionApplication
+    template_name = 'applicant/adoption_application_delete.html'
+    success_url = reverse_lazy('adoption_application_list')
+
+
+
+
+
+
+
+# Post Views
+class PostListView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'news/post_list.html'
+    context_object_name = 'posts'
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'news/post_detail.html'
+    context_object_name = 'post'
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = ['title', 'body', 'post_image', 'post_categories']
+    template_name = 'news/post_create.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('post_list')
+
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['title', 'body', 'post_image', 'post_categories']
+    template_name = 'news/post_update.html'
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'news/post_delete.html'
+    success_url = reverse_lazy('post_list')
+
+# Comment Views
+class CommentListView(LoginRequiredMixin, ListView):
+    model = Comment
+    template_name = 'comment/comment_list.html'
+    context_object_name = 'comments'
+
+class CommentDetailView(DetailView):
+    model = Comment
+    template_name = 'comment/comment_detail.html'
+    context_object_name = 'comment'
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['post', 'author', 'body']
+    template_name = 'comment/comment_form.html'
+
+class CommentUpdateView(UpdateView):
+    model = Comment
+    fields = ['post', 'author', 'body']
+    template_name = 'comment/comment_update.html'
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+    template_name = 'comment_delete.html'
+    success_url = reverse_lazy('comment_list')
+
+# Notification Views
+class NotificationListView(LoginRequiredMixin, ListView):
     model = Notification
-    template_name = 'app/notification_list.html'
+    template_name = 'notification/notification_list.html'
     context_object_name = 'notifications'
 
     def get_queryset(self):
+        # Filter notifications by the logged-in user
         return Notification.objects.filter(user=self.request.user).order_by('-timestamp')
 
+class NotificationDetailView(DetailView):
+    model = Notification
+    template_name = 'notification/notification_detail.html'
+    context_object_name = 'notification'
 
+class NotificationCreateView(CreateView):
+    model = Notification
+    fields = ['user', 'application', 'message', 'is_read']
+    template_name = 'notification/notification_create.html'
 
+class NotificationUpdateView(UpdateView):
+    model = Notification
+    fields = ['user', 'application', 'message', 'is_read']
+    template_name = 'notification/notification_update.html'
 
-
-class MarkNotificationAsReadView(View):
-    def post(self, request, pk, *args, **kwargs):
-        notification = get_object_or_404(Notification, pk=pk, user=request.user)
-        notification.is_read = True
-        notification.save()
-        return redirect('notification_list')
-
+class NotificationDeleteView(DeleteView):
+    model = Notification
+    template_name = 'notification/notification_delete.html'
+    success_url = reverse_lazy('notification_list')

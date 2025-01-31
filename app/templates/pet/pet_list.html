@@ -1,0 +1,23 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h1>Pet List</h1>
+{% if authenticated.is_staff %}
+<a href="{% url 'pet_create' %}" class="btn btn-primary mb-3">Add New Pet</a>
+{% endif %}
+<ul class="list-group">
+    {% for pet in pets %}
+    <li class="list-group-item">
+        <h3><a href="{{ pet.get_absolute_url }}">{{ pet.name }}</a></h3>
+        <p><strong>Animal:</strong> {{ pet.animal }}</p>
+        <p><strong>Breed:</strong> {{ pet.breed }}</p>
+        <p><strong>Age:</strong> {{ pet.age }} years</p>
+        {% if pet.post_image %}
+            <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}" class="img-thumbnail" style="max-width: 200px;">
+        {% endif %}
+    </li>
+    {% empty %}
+    <p>No pets available.</p>
+    {% endfor %}
+</ul>
+{% endblock content %}

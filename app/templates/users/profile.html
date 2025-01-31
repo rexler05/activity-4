@@ -1,0 +1,28 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">User Profile</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center">
+                {% if user.image %}
+                    <img src="{{ user.image.url }}" class="rounded-circle" alt="Profile Image" width="150">
+                {% else %}
+                    <img src="{% static 'profile_images/default_profile.jpg' %}" class="rounded-circle" alt="Default Profile Image" width="150">
+                {% endif %}
+            </div>
+            <h4 class="mt-3">{{ user.username }}</h4>
+            <p>Email: {{ user.email }}</p>
+            <p>Age: {{ user.age }}</p>
+            <p>Gender: {{ user.gender }}</p>
+            <p>Phone Number: {{ user.phone_number }}</p>
+
+            <a href="{% url 'profile_update' %}" class="btn btn-primary">Edit Profile</a>
+            <a href="{% url 'change_password' %}" class="btn btn-warning">Change Password</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

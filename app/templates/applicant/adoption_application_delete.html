@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+
+{% block title %}Delete Adoption Application{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4 text-danger">Delete Adoption Application</h1>
+    <p>Are you sure you want to delete the application for <strong>{{ object.pet.name }}</strong> by <strong>{{ object.user.username }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}

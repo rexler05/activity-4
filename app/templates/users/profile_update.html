@@ -1,0 +1,60 @@
+{% extends "app/base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Profile</h2>
+    <div class="card">
+        <div class="card-body">
+            <form action="{% url 'profile_update' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" id="id_username" name="username" class="form-control" value="{{ form.username.value }}" required>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <input type="email" id="id_email" name="email" class="form-control" value="{{ form.email.value }}" required>
+                </div>
+
+
+                <!-- Phone Number Field -->
+                <div class="form-group">
+                    <label for="id_phone_number">Phone Number</label>
+                    <input type="text" id="id_phone_number" name="phone_number" class="form-control" value="{{ form.phone_number.value }}">
+                </div>
+
+                <!-- Age Field -->
+                <div class="form-group">
+                    <label for="id_age">Age</label>
+                    <input type="number" id="id_age" name="age" class="form-control" value="{{ form.age.value }}">
+                </div>
+
+                <!-- Gender Field -->
+                <div class="form-group">
+                    <label for="id_gender">Gender</label>
+                    <select id="id_gender" name="gender" class="form-control">
+                        <option value="Male" {% if form.gender.value == 'Male' %} selected {% endif %}>Male</option>
+                        <option value="Female" {% if form.gender.value == 'Female' %} selected {% endif %}>Female</option>
+                        <option value="Other" {% if form.gender.value == 'Other' %} selected {% endif %}>Other</option>
+                    </select>
+                </div>
+
+                <!-- Profile Picture Field -->
+                <div class="form-group">
+                    <label for="id_image">Profile Picture</label>
+                    <input type="file" id="id_image" name="image" class="form-control-file" value="{{ form.image.value }}">
+                </div>
+
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

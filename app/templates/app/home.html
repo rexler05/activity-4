@@ -1,37 +1,50 @@
 {% extends 'app/base.html' %}
 {% load static %}
+
 {% block content %}
-    <div class="home-container">
-        <!-- Welcome Section -->
-        <section class="home-welcome">
-            <h1>Welcome to Our Website!</h1>
-            <p>Discover amazing content, connect with others, and enjoy an interactive experience!</p>
-            <a href="#features" class="home-btn">Explore Features</a>
-        </section>
+<div class="container">
+    <!-- Welcome Section -->
+    <section class="text-center my-5">
+        <h1 class="display-4">Welcome to Our Website!</h1>
+        <p class="lead">Discover amazing content, connect with others, and enjoy an interactive experience!</p>
+        <a href="#features" class="btn btn-primary btn-lg">Explore Features</a>
+    </section>
 
-        <!-- Features Section -->
-        <section id="features" class="home-features">
-            <div class="feature">
-                <img src="{% static 'images/feature1.jpg' %}" alt="Feature 1">
-                <h2>Feature One</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+    <!-- Features Section -->
+    <section id="features" class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="{% static 'images/feature1.jpg' %}" class="card-img-top" alt="Feature 1">
+                <div class="card-body">
+                    <h5 class="card-title">Feature One</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+                </div>
             </div>
-            <div class="feature">
-                <img src="{% static 'images/feature2.jpg' %}" alt="Feature 2">
-                <h2>Feature Two</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="{% static 'images/feature2.jpg' %}" class="card-img-top" alt="Feature 2">
+                <div class="card-body">
+                    <h5 class="card-title">Feature Two</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+                </div>
             </div>
-            <div class="feature">
-                <img src="{% static 'images/feature3.jpg' %}" alt="Feature 3">
-                <h2>Feature Three</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <img src="{% static 'images/feature3.jpg' %}" class="card-img-top" alt="Feature 3">
+                <div class="card-body">
+                    <h5 class="card-title">Feature Three</h5>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Call to Action Section -->
-        <section class="home-cta">
-            <h2>Ready to get started?</h2>
-            <a href="{% url 'register' %}" class="cta-btn">Join Now</a>
-        </section>
-    </div>
+    <!-- Call to Action Section -->
+    <section class="text-center my-5">
+        <h2 class="mb-3">Ready to get started?</h2>
+        <a href="{% url 'signup' %}" class="btn btn-success btn-lg">Join Now</a>
+    </section>
+</div>
 {% endblock content %}

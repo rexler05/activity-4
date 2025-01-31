@@ -1,0 +1,32 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <h2 id="news_posts_heading">News Posts</h2>
+  <a href="{% url 'post_create' %}" class="btn btn-primary mb-3" id="create_post_btn">Create News</a>
+
+  <div id="news_posts_gallery" class="row">
+    {% for post in posts %}
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4" id="post_card_{{ post.pk }}">
+        <div class="card" id="card_{{ post.pk }}">
+          <img src="{{ post.post_image.url }}" class="card-img-top" alt="{{ post.title }}" id="post_image_{{ post.pk }}">
+          <div class="card-body">
+            <h5 class="card-title" id="post_title_{{ post.pk }}">
+              <a href="{% url 'post_detail' post.pk %}" class="post_link" id="post_link_{{ post.pk }}">
+                {{ post.title }}
+              </a>
+            </h5>
+            <p class="card-text" id="post_author_{{ post.pk }}">
+              <strong>Author:</strong> {{ post.author }} |
+              <strong>Published on:</strong> {{ post.created_at|date:"F j, Y" }}
+            </p>
+            <a href="{% url 'post_detail' post.pk %}" class="btn btn-info" id="view_post_btn_{{ post.pk }}">
+              View Post
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p id="no_posts_message">No posts yet.</p>
+    {% endfor %}
+  </div>
+{% endblock content %}
