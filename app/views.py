@@ -1,10 +1,11 @@
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Pet, AdoptionApplication, Post, Comment, Notification
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-
+# Home Views
 class HomePageView(TemplateView):
     template_name = 'app/home.html'
 
@@ -25,17 +26,19 @@ class PetDetailView(DetailView):
     template_name = 'pet/pet_detail.html'
     context_object_name = 'pet'
 
-class PetCreateView(CreateView):
+class PetCreateView(LoginRequiredMixin, CreateView):
     model = Pet
     fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'is_adopted']
     template_name = 'pet/pet_create.html'
+    success_url = reverse_lazy('pet_list')
 
-class PetUpdateView(UpdateView):
+class PetUpdateView(LoginRequiredMixin, UpdateView):
     model = Pet
     fields = ['name', 'animal', 'breed', 'age', 'description', 'post_image', 'is_adopted']
     template_name = 'pet/pet_update.html'
+    success_url = reverse_lazy('pet_list')
 
-class PetDeleteView(DeleteView):
+class PetDeleteView(LoginRequiredMixin, DeleteView):
     model = Pet
     template_name = 'pet/pet_delete.html'
     success_url = reverse_lazy('pet_list')
@@ -46,45 +49,41 @@ class AdoptionApplicationListView(LoginRequiredMixin, ListView):
     template_name = 'applicant/adoption_application_list.html'
     context_object_name = 'applications'
 
-
-class AdoptionApplicationDetailView(DetailView):
+class AdoptionApplicationDetailView(LoginRequiredMixin, DetailView):
     model = AdoptionApplication
     template_name = 'applicant/adoption_application_detail.html'
     context_object_name = 'application'
 
-class AdoptionApplicationCreateView(CreateView):
+class AdoptionApplicationCreateView(LoginRequiredMixin, CreateView):
     model = AdoptionApplication
     fields = ['pet', 'reason_for_adoption', 'additional_details']
     template_name = 'applicant/adoption_application_create.html'
+    success_url = reverse_lazy('adoption_application_list')
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('adoption_application_list')
-
-
-
-
-
-class AdoptionApplicationUpdateView(UpdateView):
+class AdoptionApplicationUpdateView(LoginRequiredMixin, UpdateView):
     model = AdoptionApplication
-    fields = ['pet', 'user', 'reason_for_adoption', 'additional_details', 'status']
+    fields = ['pet', 'reason_for_adoption', 'additional_details', 'status']
     template_name = 'applicant/adoption_application_update.html'
+    success_url = reverse_lazy('adoption_application_list')
 
-
-
-class AdoptionApplicationDeleteView(DeleteView):
+class AdoptionApplicationDeleteView(LoginRequiredMixin, DeleteView):
     model = AdoptionApplication
     template_name = 'applicant/adoption_application_delete.html'
     success_url = reverse_lazy('adoption_application_list')
 
+class AdoptionApplicationApproveView(LoginRequiredMixin, UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff  # Only staff can approve applications
 
-
-
-
-
+    def post(self, request, pk, *args, **kwargs):
+        application = get_object_or_404(AdoptionApplication, pk=pk)
+        application.status = "Approved"
+        application.save()
+        return redirect('adoption_application_list')
 
 # Post Views
 class PostListView(LoginRequiredMixin, ListView):
@@ -92,31 +91,28 @@ class PostListView(LoginRequiredMixin, ListView):
     template_name = 'news/post_list.html'
     context_object_name = 'posts'
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'news/post_detail.html'
     context_object_name = 'post'
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'body', 'post_image', 'post_categories']
     template_name = 'news/post_create.html'
+    success_url = reverse_lazy('post_list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('post_list')
-
-
-
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'body', 'post_image', 'post_categories']
     template_name = 'news/post_update.html'
+    success_url = reverse_lazy('post_list')
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'news/post_delete.html'
     success_url = reverse_lazy('post_list')
@@ -127,24 +123,30 @@ class CommentListView(LoginRequiredMixin, ListView):
     template_name = 'comment/comment_list.html'
     context_object_name = 'comments'
 
-class CommentDetailView(DetailView):
+class CommentDetailView(LoginRequiredMixin, DetailView):
     model = Comment
     template_name = 'comment/comment_detail.html'
     context_object_name = 'comment'
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
-    fields = ['post', 'author', 'body']
+    fields = ['post', 'body']
     template_name = 'comment/comment_form.html'
+    success_url = reverse_lazy('comment_list')
 
-class CommentUpdateView(UpdateView):
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comment
-    fields = ['post', 'author', 'body']
+    fields = ['body']
     template_name = 'comment/comment_update.html'
+    success_url = reverse_lazy('comment_list')
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
-    template_name = 'comment_delete.html'
+    template_name = 'comment/comment_delete.html'
     success_url = reverse_lazy('comment_list')
 
 # Notification Views
@@ -154,25 +156,30 @@ class NotificationListView(LoginRequiredMixin, ListView):
     context_object_name = 'notifications'
 
     def get_queryset(self):
-        # Filter notifications by the logged-in user
         return Notification.objects.filter(user=self.request.user).order_by('-timestamp')
 
-class NotificationDetailView(DetailView):
+class NotificationDetailView(LoginRequiredMixin, DetailView):
     model = Notification
     template_name = 'notification/notification_detail.html'
     context_object_name = 'notification'
 
-class NotificationCreateView(CreateView):
+class NotificationCreateView(LoginRequiredMixin, CreateView):
     model = Notification
-    fields = ['user', 'application', 'message', 'is_read']
+    fields = ['application', 'message', 'is_read']
     template_name = 'notification/notification_create.html'
+    success_url = reverse_lazy('notification_list')
 
-class NotificationUpdateView(UpdateView):
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class NotificationUpdateView(LoginRequiredMixin, UpdateView):
     model = Notification
-    fields = ['user', 'application', 'message', 'is_read']
+    fields = ['message', 'is_read']
     template_name = 'notification/notification_update.html'
+    success_url = reverse_lazy('notification_list')
 
-class NotificationDeleteView(DeleteView):
+class NotificationDeleteView(LoginRequiredMixin, DeleteView):
     model = Notification
     template_name = 'notification/notification_delete.html'
     success_url = reverse_lazy('notification_list')

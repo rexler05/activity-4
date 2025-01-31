@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import (
     PetListView, PetDetailView, PetCreateView, PetUpdateView, PetDeleteView,
-    AdoptionApplicationListView, AdoptionApplicationDetailView, AdoptionApplicationCreateView,
+    AdoptionApplicationListView, AdoptionApplicationDetailView, AdoptionApplicationCreateView, AdoptionApplicationApproveView,
     AdoptionApplicationUpdateView, AdoptionApplicationDeleteView,
     PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView,
     CommentListView, CommentDetailView, CommentCreateView, CommentUpdateView, CommentDeleteView,
@@ -23,13 +23,15 @@ urlpatterns = [
     path('pets/<int:pk>/update/', PetUpdateView.as_view(), name='pet_update'),
     path('pets/<int:pk>/delete/', PetDeleteView.as_view(), name='pet_delete'),
 
+
+
     # AdoptionApplication URLs
     path('adoptions/', AdoptionApplicationListView.as_view(), name='adoption_application_list'),
     path('adoptions/<int:pk>/', AdoptionApplicationDetailView.as_view(), name='adoption_application_detail'),
     path('adoptions/create/', AdoptionApplicationCreateView.as_view(), name='adoption_application_create'),
     path('adoptions/<int:pk>/update/', AdoptionApplicationUpdateView.as_view(), name='adoption_application_update'),
     path('adoptions/<int:pk>/delete/', AdoptionApplicationDeleteView.as_view(), name='adoption_application_delete'),
-
+    path('adoptions/<int:pk>/approve/', AdoptionApplicationApproveView.as_view(), name='adoption_application_approve'),
     # Post URLs
     path('posts/', PostListView.as_view(), name='post_list'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
@@ -51,4 +53,6 @@ urlpatterns = [
     path('notifications/<int:pk>/update/', NotificationUpdateView.as_view(), name='notification_update'),
     path('notifications/<int:pk>/delete/', NotificationDeleteView.as_view(), name='notification_delete'),
 ]
+
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
