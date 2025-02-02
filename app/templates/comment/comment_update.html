@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <div id="comment_update_container">
+    <h2>Edit Your Comment</h2>
+
+    <form action="{% url 'comment_update' comment.pk %}" method="post">
+      {% csrf_token %}
+
+      <!-- Render each field individually with custom IDs -->
+      <div class="mb-3">
+        <label for="id_body" class="form-label">Comment</label>
+        <textarea name="body" class="form-control" id="id_body" rows="3">{{ form.body.value }}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="save_changes">Save Changes</button>
+    </form>
+  </div>
+{% endblock %}

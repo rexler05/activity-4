@@ -1,25 +1,37 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-  <h2>Create a New Post</h2>
-  <form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data" id="post_create_form">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" id="title" name="title">
-    </div>
-    <div class="form-group">
-      <label for="body">Body</label>
-      <textarea id="body" name="body"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="post_image">Post Image</label>
-      <input type="file" id="post_image" name="post_image">
-    </div>
-    <div class="form-group">
-      <label for="post_categories">Categories</label>
-      <input type="text" id="post_categories" name="post_categories">
-    </div>
-    <button type="submit" id="create_post_btn">Create Post</button>
-  </form>
+  <div class="container mt-4">
+    <h2>Create a New Post</h2>
+    <form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data" id="post_create_form">
+      {% csrf_token %}
+
+      <!-- Title Field -->
+      <div class="form-group mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" id="title" name="title" class="form-control" required>
+      </div>
+
+      <!-- Body Field -->
+      <div class="form-group mb-3">
+        <label for="body" class="form-label">Body</label>
+        <textarea id="body" name="body" class="form-control" rows="4" required></textarea>
+      </div>
+
+      <!-- Post Image Field -->
+      <div class="form-group mb-3">
+        <label for="post_image" class="form-label">Post Image</label>
+        <input type="file" id="post_image" name="post_image" class="form-control-file" required>
+      </div>
+
+      <!-- Categories Field -->
+      <div class="form-group mb-3">
+        <label for="post_categories" class="form-label">Categories</label>
+        <input type="text" id="post_categories" name="post_categories" class="form-control" required>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" id="create_post_btn" class="btn btn-primary">Create Post</button>
+    </form>
+  </div>
 {% endblock content %}

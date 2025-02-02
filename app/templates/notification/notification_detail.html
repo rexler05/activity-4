@@ -1,16 +1,27 @@
 {% extends 'app/base.html' %}
 
-{% block title %}Notification Details{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h1 class="mb-4">Notification Details</h1>
-    <p><strong>User:</strong> {{ notification.user.username }}</p>
-    <p><strong>Application:</strong> {{ notification.application }}</p>
-    <p><strong>Message:</strong> {{ notification.message }}</p>
-    <p><strong>Status:</strong> {% if notification.is_read %}Read{% else %}Unread{% endif %}</p>
-    <p><strong>Created At:</strong> {{ notification.created_at }}</p>
-    <a href="{% url 'notification_update' notification.id %}" class="btn btn-warning">Edit</a>
-    <a href="{% url 'notification_list' %}" class="btn btn-secondary">Back to List</a>
-</div>
+    <div class="container mt-4">
+        <h1>Notification Detail</h1>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ notification.notification_type }}</h3>
+                <small>From: {{ notification.sender.username }}</small>
+            </div>
+            <div class="card-body">
+                <p><strong>Message:</strong> {{ notification.message }}</p>
+                <p><strong>Sent at:</strong> {{ notification.created_at }}</p>
+
+                {% if request.user == notification.sender or request.user.is_staff %}
+                    <div class="mt-3">
+                        <a href="{% url 'notification_update' notification.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'notification_delete' notification.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <a href="{% url 'notification_list' %}" class="btn btn-secondary mt-4">Back to Notifications</a>
+    </div>
 {% endblock content %}

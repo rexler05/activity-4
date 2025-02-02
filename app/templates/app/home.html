@@ -14,7 +14,7 @@
     <section id="features" class="row text-center">
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                <img src="{% static 'images/feature1.jpg' %}" class="card-img-top" alt="Feature 1">
+                <img src="{% static 'images/pet1.jpg' %}" class="card-img-top" alt="Feature 1">
                 <div class="card-body">
                     <h5 class="card-title">Feature One</h5>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                <img src="{% static 'images/feature2.jpg' %}" class="card-img-top" alt="Feature 2">
+                <img src="{% static 'images/pet2.jpg' %}" class="card-img-top" alt="Feature 2">
                 <div class="card-body">
                     <h5 class="card-title">Feature Two</h5>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
@@ -32,7 +32,7 @@
         </div>
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                <img src="{% static 'images/feature3.jpg' %}" class="card-img-top" alt="Feature 3">
+                <img src="{% static 'images/pet3.jpg' %}" class="card-img-top" alt="Feature 3">
                 <div class="card-body">
                     <h5 class="card-title">Feature Three</h5>
                     <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
@@ -40,11 +40,13 @@
             </div>
         </div>
     </section>
-
+    {% if user.is_authenticated %}
+    {% else %}
     <!-- Call to Action Section -->
     <section class="text-center my-5">
         <h2 class="mb-3">Ready to get started?</h2>
         <a href="{% url 'signup' %}" class="btn btn-success btn-lg">Join Now</a>
     </section>
+    {% endif %}
 </div>
 {% endblock content %}

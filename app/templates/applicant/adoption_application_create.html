@@ -1,34 +1,58 @@
 {% extends 'app/base.html' %}
 
-{% block title %}Create Adoption Application{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h1 class="mb-4">Create Adoption Application</h1>
-    <form action="{% url 'adoption_application_create' %}" method="post">
-        {% csrf_token %}
+<div class="container mt-4">
+    <h1 class="mb-4">Apply for Adoption</h1>
 
-        <div class="form-group">
-            <label for="id_pet">Pet</label>
-            <select id="id_pet" name="pet" class="form-control" required>
-                {% for pet in form.pet.field.queryset %}
-                    <option value="{{ pet.pk }}">{{ pet.name }}</option>
+    <div class="card shadow-sm p-4">
+
+        {% if application_limit_reached %}
+        <div class="alert alert-danger">
+            You have reached the maximum number of adoption applications allowed.
+        </div>
+        {% endif %}
+
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            </select>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
         </div>
+        {% endif %}
 
-        <div class="form-group">
-            <label for="id_reason_for_adoption">Reason for Adoption</label>
-            <textarea id="id_reason_for_adoption" name="reason_for_adoption" class="form-control" rows="4" required></textarea>
-        </div>
+        <form action="{% url 'adoption_application_create' pet.pk %}" method="post">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label for="id_additional_details">Additional Details</label>
-            <textarea id="id_additional_details" name="additional_details" class="form-control" rows="4"></textarea>
-        </div>
+            <!-- Display the selected pet's name -->
+            <div class="form-group">
+                <label for="pet">Pet Name</label>
+                <input type="text" class="form-control" id="pet" value="{{ pet.name }}" readonly>
+            </div>
 
-        <button type="submit" class="btn btn-success">Submit</button>
-        <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+            <!-- Reason for Adoption -->
+            <div class="form-group">
+                <label for="id_reason_for_adoption">Reason for Adoption</label>
+                <textarea class="form-control" id="id_reason_for_adoption" name="reason_for_adoption" rows="4">{{ form.reason_for_adoption.value }}</textarea>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="form-group">
+                <label for="id_additional_details">Additional Details</label>
+                <textarea class="form-control" id="id_additional_details" name="additional_details" rows="4">{{ form.additional_details.value }}</textarea>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Submit Application</button>
+                <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock content %}

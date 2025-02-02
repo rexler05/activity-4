@@ -1,61 +1,89 @@
 {% extends 'app/base.html' %}
 
-{% block title %}Adoption Applications{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h1 class="mb-4">Adoption Applications</h1>
-    {% if not request.user.is_staff %}
-        <a href="{% url 'adoption_application_create' %}" class="btn btn-primary mb-3">Create New Application</a>
-    {% endif %}
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Pet</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>View</th>
-                {% if request.user.is_staff %}
-                    <th>Approve</th>
-                    <th>Delete</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.id }}</td>
-                <td>{{ application.pet.name }}</td>
-                <td>{{ application.user.username }}</td>
-                <td>{{ application.status }}</td>
-                <td>
-                    <a href="{% url 'adoption_application_detail' application.pk %}" class="btn btn-info btn-sm">View</a>
-                </td>
-                {% if request.user.is_staff %}
-                    <td>
-                        {% if application.status != "Approved" %}
-                            <form action="{% url 'adoption_application_approve' application.pk %}" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
-                            </form>
-                        {% else %}
-                            <span class="text-success">Approved</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'adoption_application_delete' application.pk %}" class="btn btn-danger btn-sm">Delete</a>
-                    </td>
-                {% endif %}
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="{% if request.user.is_staff %}8{% else %}5{% endif %}" class="text-center">
-                    No adoption applications found.
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="container mt-4">
+    <h1 class="mb-4 text-primary">Adoption Applications</h1>
+
+    <div class="alert alert-secondary">
+        <p><strong>Pending Applications:</strong> {{ pending_applications|length }}</p>
+        <p><strong>Approved Applications:</strong> {{ approved_applications|length }}</p>
+    </div>
+
+    <!-- Pending Applications Table -->
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-warning text-white">
+            <h3 class="mb-0">Pending Applications</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pet</th>
+                        <th>Applicant</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-light">
+                    {% for application in pending_applications %}
+                        <tr>
+                            <td class="fw-bold">{{ application.pet.name }}</td>
+                            <td>{{ application.user.username }}</td>
+                            <td><span class="badge bg-warning text-dark">{{ application.status }}</span></td>
+                            <td>
+                                <a href="{% url 'adoption_application_detail' application.pk %}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
+
+                                {% if request.user == application.user %}
+                                    <a href="{% url 'adoption_application_update' application.pk %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="{% url 'adoption_application_delete' application.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
+                                {% endif %}
+
+                                {% if request.user.is_staff %}
+                                    <a href="{% url 'adoption_application_approve' application.pk %}" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Approve</a>
+                                    <a href="{% url 'adoption_application_reject' application.pk %}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Reject</a>
+
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4" class="text-center text-muted">No pending adoption applications found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Approved Applications Table -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0">Approved Applications</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Pet</th>
+                        <th>Applicant</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-light">
+                    {% for application in approved_applications %}
+                        <tr>
+                            <td class="fw-bold">{{ application.pet.name }}</td>
+                            <td>{{ application.user.username }}</td>
+                            <td><span class="badge bg-success">{{ application.status }}</span></td>
+                            <td>
+                                <a href="{% url 'adoption_application_detail' application.pk %}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4" class="text-center text-muted">No approved adoption applications found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock content %}

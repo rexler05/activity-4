@@ -2,26 +2,30 @@
 {% load static %}
 
 {% block content %}
-<div class="entry-container">
+<div class="container">
     <form action="{% url 'login' %}" method="post" class="auth-form">
         {% csrf_token %}
-        <h2>Login</h2>
+        <h2 class="text-center mb-4">Login</h2>
 
+        <!-- Username Field -->
         <div class="form-group">
             <label for="id_username">Username</label>
             <input type="text" id="id_username" name="username" class="form-control" required>
         </div>
 
+        <!-- Password Field -->
         <div class="form-group">
             <label for="id_password">Password</label>
             <input type="password" id="id_password" name="password" class="form-control" required>
         </div>
 
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Login</button>
+        <!-- Submit Button -->
+        <div class="form-actions text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
         </div>
 
-        <p class="text-center">Don't have an account? <a href="{% url 'signup' %}">Register here</a></p>
+        <!-- Register Link -->
+        <p class="text-center mt-3">Don't have an account? <a href="{% url 'signup' %}">Register here</a></p>
     </form>
 </div>
 {% endblock content %}

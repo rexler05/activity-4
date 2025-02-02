@@ -1,19 +1,27 @@
 {% extends 'app/base.html' %}
 
-{% block title %}Application Details{% endblock %}
-
 {% block content %}
-<div class="container">
-    <h1 class="mb-4">Application Details</h1>
-    <p><strong>Pet:</strong> {{ application.pet.name }}</p>
-    <p><strong>User:</strong> {{ application.user.username }}</p>
-    <p><strong>Reason for Adoption:</strong> {{ application.reason_for_adoption }}</p>
-    <p><strong>Additional Details:</strong> {{ application.additional_details }}</p>
-    <p><strong>Status:</strong> {{ application.status }}</p>
-    <p><strong>Created At:</strong> {{ application.created_at }}</p>
-    {% if authenticated.is_staff%}
-    <a href="{% url 'adoption_application_update' application.pk %}" class="btn btn-warning">Edit</a>
-    <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary">Back to List</a>
-    {% endif %}
+<div class="container mt-4">
+    <h1 class="mb-4">Adoption Application Details</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title"><strong>Pet:</strong> {{ application.pet.name }}</h5>
+            <p class="card-text"><strong>Applicant:</strong> {{ application.user.username }}</p>
+            <p class="card-text"><strong>Reason for Adoption:</strong> {{ application.reason_for_adoption }}</p>
+            <p class="card-text"><strong>Additional Details:</strong> {{ application.additional_details }}</p>
+            <p class="card-text"><strong>Status:</strong>
+                <span class="badge {% if application.status == 'Pending' %}badge-warning{% elif application.status == 'Approved' %}badge-success{% else %}badge-danger{% endif %}">
+                    {{ application.status }}
+                </span>
+            </p>
+
+            <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+            {% if request.user == application.user %}
+            <a href="{% url 'adoption_application_update' application.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
+            <a href="{% url 'adoption_application_delete' application.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock content %}

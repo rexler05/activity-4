@@ -1,15 +1,16 @@
 {% extends 'app/base.html' %}
 {% load static %}
+
 {% block content %}
-<div class="form-container">
+<div class="container">
     <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data" class="form-register">
         {% csrf_token %}
-        <h2 class="form-heading">Register</h2>
+        <h2 class="form-heading text-center mb-4">Register</h2>
 
         <!-- Username Field -->
         <div class="form-group">
             <label for="username" class="form-label">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" class="form-input" required>
+            <input type="text" id="username" name="username" placeholder="Enter your username" class="form-control" required>
             {% if form.username.errors %}
                 <div class="text-danger">
                     {% for error in form.username.errors %}
@@ -22,7 +23,7 @@
         <!-- Password Field -->
         <div class="form-group">
             <label for="password1" class="form-label">Password</label>
-            <input type="password" id="password1" name="password1" placeholder="Enter your password" class="form-input" required>
+            <input type="password" id="password1" name="password1" placeholder="Enter your password" class="form-control" required>
             {% if form.password1.errors %}
                 <div class="text-danger">
                     {% for error in form.password1.errors %}
@@ -35,7 +36,7 @@
         <!-- Confirm Password Field -->
         <div class="form-group">
             <label for="password2" class="form-label">Confirm Password</label>
-            <input type="password" id="password2" name="password2" placeholder="Re-enter your password" class="form-input" required>
+            <input type="password" id="password2" name="password2" placeholder="Re-enter your password" class="form-control" required>
             {% if form.password2.errors %}
                 <div class="text-danger">
                     {% for error in form.password2.errors %}
@@ -45,11 +46,10 @@
             {% endif %}
         </div>
 
-
         <!-- Email Field -->
         <div class="form-group">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" class="form-input" required>
+            <input type="email" id="email" name="email" placeholder="Enter your email" class="form-control" required>
             {% if form.email.errors %}
                 <div class="text-danger">
                     {% for error in form.email.errors %}
@@ -62,7 +62,7 @@
         <!-- Age Field -->
         <div class="form-group">
             <label for="age" class="form-label">Age</label>
-            <input type="text" id="age" name="age" placeholder="Enter your age" class="form-input"  required>
+            <input type="text" id="age" name="age" placeholder="Enter your age" class="form-control" required>
             {% if form.age.errors %}
                 <div class="text-danger">
                     {% for error in form.age.errors %}
@@ -75,7 +75,7 @@
         <!-- Gender Field -->
         <div class="form-group">
             <label for="gender" class="form-label">Gender</label>
-            <select id="gender" name="gender" class="form-input" required>
+            <select id="gender" name="gender" class="form-control" required>
                 <option value="">Select Gender</option>
                 <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
                 <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
@@ -93,7 +93,7 @@
         <!-- Phone Number Field -->
         <div class="form-group">
             <label for="phone_number" class="form-label">Phone Number</label>
-            <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" class="form-input" required>
+            <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" class="form-control" required>
             {% if form.phone_number.errors %}
                 <div class="text-danger">
                     {% for error in form.phone_number.errors %}
@@ -106,7 +106,7 @@
         <!-- Profile Image Field -->
         <div class="form-group">
             <label for="image" class="form-label">Profile Image</label>
-            <input type="file" id="image" name="image" class="form-input">
+            <input type="file" id="image" name="image" class="form-control-file">
             {% if form.image.errors %}
                 <div class="text-danger">
                     {% for error in form.image.errors %}
@@ -117,10 +117,10 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn-submit">Register</button>
+        <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
 
         <!-- Login Link -->
-        <p class="text-center">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
     </form>
 </div>
 {% endblock content %}

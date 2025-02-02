@@ -1,18 +1,23 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<h1>{{ pet.name }}</h1>
-<p><strong>Animal:</strong> {{ pet.animal }}</p>
-<p><strong>Breed:</strong> {{ pet.breed }}</p>
-<p><strong>Age:</strong> {{ pet.age }} years</p>
-<p><strong>Description:</strong> {{ pet.description }}</p>
-{% if pet.post_image %}
-    <img src="{{ pet.post_image.url }}" alt="{{ pet.name }}" class="img-fluid">
-{% endif %}
-<p><strong>Owner:</strong> {{ pet.owner }}</p>
-<p><strong>Adopted:</strong> {{ pet.is_adopted|yesno:"Yes,No" }}</p>
-
-<a href="{% url 'pet_update' pet.pk %}" class="btn btn-warning">Edit</a>
-<a href="{% url 'pet_delete' pet.pk %}" class="btn btn-danger">Delete</a>
-<a href="{% url 'pet_list' %}" class="btn btn-secondary">Back to List</a>
+<div class="container mt-4">
+    <h1 class="mb-4">{{ pet.name }}</h1>
+    <div class="card shadow-sm">
+        {% if pet.post_image %}
+        <img src="{{ pet.post_image.url }}" class="card-img-top" alt="{{ pet.name }}">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title"><strong>Animal:</strong> {{ pet.animal }}</h5>
+            <p class="card-text"><strong>Breed:</strong> {{ pet.breed }}</p>
+            <p class="card-text"><strong>Age:</strong> {{ pet.age }} years</p>
+            <p class="card-text"><strong>Description:</strong> {{ pet.description }}</p>
+            <a href="{% url 'pet_list' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+            {% if request.user == pet.owner %}
+            <a href="{% url 'pet_update' pet.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
+            <a href="{% url 'pet_delete' pet.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock content %}

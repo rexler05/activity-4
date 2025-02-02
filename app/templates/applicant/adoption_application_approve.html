@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Approve Adoption Application</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Adoption Application for {{ application.pet.name }}</h5>
+            <p class="card-text">
+                <strong>Applicant:</strong> {{ application.user.username }}<br>
+                <strong>Reason for Adoption:</strong> {{ application.reason_for_adoption }}<br>
+                <strong>Additional Details:</strong> {{ application.additional_details }}<br>
+                <strong>Status:</strong> {{ application.status }}
+            </p>
+            <!-- Form to approve the adoption -->
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Approve Adoption</button>
+            </form>
+            <hr>
+            <a href="{% url 'adoption_application_list' %}" class="btn btn-secondary">Back to Applications</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

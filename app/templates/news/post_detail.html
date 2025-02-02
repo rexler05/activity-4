@@ -1,33 +1,52 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-  <div id="post_detail_container">
-    <h2 id="post_title">{{ post.title }}</h2>
+  <div class="container mt-4">
+    <h1>{{ post.title }}</h1>
+    <p class="text-muted">By {{ post.author }} on {{ post.date_posted }}</p>
 
-    <div id="post_info">
-      <p><strong>Author:</strong> <span id="post_author">{{ post.author }}</span></p>
-      <p><strong>Created:</strong> <span id="post_date">{{ post.date_posted|date:"F j, Y" }}</span></p>
-    </div>
+    {% if post.post_image %}
+      <div class="mb-4">
+        <img src="{{ post.post_image.url }}" class="img-fluid" alt="Post image">
+      </div>
+    {% endif %}
 
-    <div id="post_image_section">
-      {% if post.post_image %}
-        <img src="{{ post.post_image.url }}" alt="{{ post.title }}" class="post_image" id="post_image_{{ post.pk }}">
-      {% else %}
-        <p id="no_image_message">No image available</p>
-      {% endif %}
-    </div>
+    <p>{{ post.body }}</p>
 
-    <div id="post_body">
-      <p>{{ post.body|safe }}</p>
-    </div>
+    <h2>Comments</h2>
+    {% for comment in comments %}
+      <div class="border p-3 mb-3">
+        <p><strong>{{ comment.author.username }}</strong>:
+          {{ comment.body|truncatechars:80 }}
+          {% if comment.body|length > 80 %}
+            <a href="{% url 'comment_detail' comment.pk %}">See More</a>
+          {% endif %}
+        </p>
+        {% if user == comment.author %}
+          <div>
+            <a href="{% url 'comment_update' comment.pk %}" class="btn btn-warning btn-sm">Edit</a> |
+            <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-danger btn-sm">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>No comments yet.</p>
+    {% endfor %}
 
-    <div id="post_categories">
-      <p><strong>Categories:</strong> <span id="post_categories_text">{{ post.post_categories }}</span></p>
-    </div>
+    {% if user.is_authenticated %}
+      <h3>Leave a comment</h3>
+      <form method="post">
+        {% csrf_token %}
 
-    <div id="post_actions">
-      <a href="{% url 'post_update' post.pk %}" class="btn btn-warning" id="edit_post_btn">Edit</a>
-      <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger" id="delete_post_btn">Delete</a>
-    </div>
+        <div class="mb-3">
+          <label for="comment_body" class="form-label">Comment</label>
+          <textarea name="body" class="form-control" id="comment_body" rows="3" placeholder="Your comments...."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit_comment">Post Comment</button>
+      </form>
+    {% else %}
+      <p>You must be logged in to leave a comment.</p>
+    {% endif %}
   </div>
-{% endblock content %}
+{% endblock %}
