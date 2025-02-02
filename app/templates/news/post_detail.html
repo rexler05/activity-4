@@ -5,6 +5,14 @@
     <h1>{{ post.title }}</h1>
     <p class="text-muted">By {{ post.author }} on {{ post.date_posted }}</p>
 
+    <!-- Show Edit and Delete buttons only if the logged-in user is the post owner -->
+    {% if user == post.author %}
+      <div class="mb-3">
+        <a href="{% url 'post_update' post.pk %}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger btn-sm">Delete</a>
+      </div>
+    {% endif %}
+
     {% if post.post_image %}
       <div class="mb-4">
         <img src="{{ post.post_image.url }}" class="img-fluid" alt="Post image">
@@ -24,7 +32,7 @@
         </p>
         {% if user == comment.author %}
           <div>
-            <a href="{% url 'comment_update' comment.pk %}" class="btn btn-warning btn-sm">Edit</a> |
+            <a href="{% url 'comment_update' comment.pk %}" class="btn btn-warning btn-sm">Edit</a>
             <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-danger btn-sm">Delete</a>
           </div>
         {% endif %}
@@ -37,12 +45,10 @@
       <h3>Leave a comment</h3>
       <form method="post">
         {% csrf_token %}
-
         <div class="mb-3">
           <label for="comment_body" class="form-label">Comment</label>
           <textarea name="body" class="form-control" id="comment_body" rows="3" placeholder="Your comments...."></textarea>
         </div>
-
         <button type="submit" class="btn btn-primary" id="submit_comment">Post Comment</button>
       </form>
     {% else %}
